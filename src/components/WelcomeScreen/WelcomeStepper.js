@@ -11,12 +11,12 @@ const useStyles = makeStyles(theme => ({
     button: {
         // color: "#fafafa",
         "&:disabled": {
-            color: "#fafafa",
-            background: "#fafafa",
+            color: "#fff",
+            background: "#fff",
         },
         "&:hover": {
-            color: "#fafafa",
-            background: "#fafafa",
+            color: "#fff",
+            background: "#fff",
         },
     }
 }));
@@ -74,6 +74,7 @@ export default function SwipeableTextMobileStepper() {
                 ))}
             </SwipeableViews>
             <MobileStepper
+                style={{ backgroundColor: "#fff" }}
                 variant="dots"
                 steps={maxSteps}
                 position="static"
