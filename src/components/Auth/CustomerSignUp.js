@@ -13,11 +13,16 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { cityData } from "../../utils/LatLon";
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import UpdateLocation from "../../utils/UpdateLocation";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
-function SignInLink() {
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+function SignUpLink() {
   return (
     <Typography variant="body2">
       {'Already have an account? '}
@@ -81,6 +86,13 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  formLabel: {
+    textAlign: "left",
+    marginRight: 0
+  },
+  checkbox: {
+    marginBottom: "auto"
+  }
 }));
 
 export default function SignInSide() {
@@ -88,12 +100,10 @@ export default function SignInSide() {
   let history = useHistory();
 
   var [username, setUsername] = useState('');
-  const [selectedLocation, setSelectedLocation] = useState({});
+  const [selectedLocation, setSelectedLocation] = useState([]);
   const [err, setErr] = useState(false);
   const [errMessage, setErrMessage] = useState('');
   const [openFail, setOpenFail] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState('');
   const [signUpMessage, setSignUpMessage] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [mobileErrorMessage, setMobileErrorMessage] = useState('');
@@ -126,26 +136,26 @@ export default function SignInSide() {
     routeToSignIn = true;
   }
 
-  const generatePassword = () => {
-    var result, result1, result2, result3 = '';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-    var numbers = '0123456789';
-    var specialChars = '!@_"#$%&()*+,-./;:<=>?[]^`{}|~';
-    var charactersLength = characters.length;
-    for (var i = 0; i < 20; i++) {
-      result1 += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    var numbersLength = numbers.length;
-    for (var j = 0; j < 5; j++) {
-      result2 += numbers.charAt(Math.floor(Math.random() * numbersLength));
-    }
-    var specialCharsLength = specialChars.length;
-    for (var k = 0; k < 5; k++) {
-      result3 += specialChars.charAt(Math.floor(Math.random() * specialCharsLength));
-    }
-    result = result1 + result2 + result3;
-    return result;
-  }
+  // const generatePassword = () => {
+  //   var result, result1, result2, result3 = '';
+  //   var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  //   var numbers = '0123456789';
+  //   var specialChars = '!@_"#$%&()*+,-./;:<=>?[]^`{}|~';
+  //   var charactersLength = characters.length;
+  //   for (var i = 0; i < 20; i++) {
+  //     result1 += characters.charAt(Math.floor(Math.random() * charactersLength));
+  //   }
+  //   var numbersLength = numbers.length;
+  //   for (var j = 0; j < 5; j++) {
+  //     result2 += numbers.charAt(Math.floor(Math.random() * numbersLength));
+  //   }
+  //   var specialCharsLength = specialChars.length;
+  //   for (var k = 0; k < 5; k++) {
+  //     result3 += specialChars.charAt(Math.floor(Math.random() * specialCharsLength));
+  //   }
+  //   result = result1 + result2 + result3;
+  //   return result;
+  // }
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -157,19 +167,23 @@ export default function SignInSide() {
     if (username.match(phoneRegExp)) {
       setMobileErrorMessage('');
       setMobileErrorState(false);
-      if (selectedLocation) {
-        console.log("inside if");
-        if (isChecked) {
-          await signUp();
-          if (routeToSignIn) {
-            history.push("/signin");
+      console.log(selectedLocation);
+      if (selectedLocation !== null) {
+        if (selectedLocation.length !== 0) {
+          if (isChecked) {
+            await signUp();
+            if (routeToSignIn) {
+              history.push("/signin");
+            }
+          } else {
+            setSignUpMessage('Please check that you agree with AHAMarché Terms & Conditions to proceed further.');
+            setOpenFail(true);
           }
         } else {
-          setSignUpMessage('Please check that you agree with AHAMarché Terms & Conditions to proceed further.');
-          setOpenFail(true);
+          setErrMessage("Please select a city");
+          setErr(true);
         }
       } else {
-        console.log("inside else");
         setErrMessage("Please select a city");
         setErr(true);
       }
@@ -182,13 +196,8 @@ export default function SignInSide() {
   const handleChange = (event, value) => {
     if (event.target.id === 'phone') {
       setUsername(event.target.value);
-    } else {
-      setSelectedLocation(value);
-      console.log(value);
-      if (value) {
-        setErr(false);
-        setErrMessage("");
-      }
+      setMobileErrorMessage('');
+      setMobileErrorState(false);
     }
   }
 
@@ -201,7 +210,6 @@ export default function SignInSide() {
       return;
     }
     setOpenFail(false);
-    setOpen(false);
   };
 
   return (
@@ -214,7 +222,7 @@ export default function SignInSide() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Customer Sign up
           </Typography>
           <form className={classes.form} onSubmit={handleSubmit} noValidate>
             <TextField
@@ -232,21 +240,9 @@ export default function SignInSide() {
               name="phone"
               autoComplete="phone"
               autoFocus
-            />
-            <Autocomplete
-              id="city"
-              options={cityData}
-              getOptionLabel={(option) => option.name_e}
               onChange={handleChange}
-              renderInput={params => (
-                <TextField
-                  error={err}
-                  helperText={errMessage}
-                  {...params}
-                  fullWidth
-                  label="City"
-                  variant="outlined" />)}
             />
+            <UpdateLocation setSelectedLocation={setSelectedLocation} err={err} setErr={setErr} errMessage={errMessage} setErrMessage={setErrMessage}></UpdateLocation>
             <FormControlLabel
               className={classes.formLabel}
               control={<Checkbox className={classes.checkbox} value="userAgreed" color="primary" />}
@@ -262,9 +258,12 @@ export default function SignInSide() {
             >
               Sign Up
             </Button>
+            <Snackbar open={openFail} autoHideDuration={5000} onClose={handleClose}>
+              <Alert style={{ textAlign: "left" }} onClose={handleClose} severity="error">{signUpMessage}</Alert>
+            </Snackbar>
             <Grid container justify="center">
               <Grid item>
-                <SignInLink></SignInLink>
+                <SignUpLink></SignUpLink>
               </Grid>
             </Grid>
             <Box mt={5}>
