@@ -1,5 +1,5 @@
 import axios from "axios";
-import { config } from "./config";
+import { config } from "./Config";
 import { Auth } from "aws-amplify";
 
 export const api = axios.create({
