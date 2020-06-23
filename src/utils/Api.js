@@ -32,7 +32,7 @@ export const getCurrentUser = async () => {
 export const getUserById = async userId => {
   try {
     return await api.get(
-      config.api.endpoints.user + "/user-" + userId /*+ "?sort=" + userId*/
+      config.api.endpoints.user + "/user-" + userId
     );
   } catch (e) {
     console.log("Error calling getUserById API: ", e);
