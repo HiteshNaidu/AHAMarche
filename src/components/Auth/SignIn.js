@@ -1,4 +1,4 @@
-import React/*, { useContext }*/ from 'react';
+import React, { useContext } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -7,19 +7,19 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-// import { Auth } from 'aws-amplify';
-// import Snackbar from "@material-ui/core/Snackbar";
-// import MuiAlert from "@material-ui/lab/Alert";
-// import { postUserById } from "../../utils/Api";
+import { Auth } from 'aws-amplify';
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import { postUserById } from "../../utils/Api";
 import { useHistory } from "react-router-dom";
-// import { AuthContext } from "../../App";
+import { AuthContext } from "../../App";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Avatar from '@material-ui/core/Avatar';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
-// function Alert(props) {
-//   return <MuiAlert elevation={6} variant="filled" {...props} />;
-// }
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 function SignUpLink() {
   return (
@@ -69,13 +69,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function SignInSide() {
-  // const currentUser = useContext(AuthContext);
+  const currentUser = useContext(AuthContext);
   const classes = useStyles();
   let history = useHistory();
 
   var [username, setUsername] = React.useState('');
-  // const [signInMessage, setSignInMessage] = React.useState('');
-  // const [openFail, setOpenFail] = React.useState(false);
+  const [signInMessage, setSignInMessage] = React.useState('');
+  const [openFail, setOpenFail] = React.useState(false);
   const [mobileErrorMessage, setMobileErrorMessage] = React.useState('');
   const [mobileErrorState, setMobileErrorState] = React.useState(false);
 
@@ -84,29 +84,29 @@ export default function SignInSide() {
   const phoneRegExp = /^(\+1)?\(?\d{3}\)?[]?\d{3}[]?\d{4}$/;
 
   const signIn = () => {
-    // Auth.signIn({
-    //   username: username,
-    // })
-    //   .then((user) => {
-    //     currentUser.setUser(user);
-    //     postUserById(user.challengeParam.USERNAME, {
-    //       "cognitoUser": {
-    //         "username": username,
-    //         "session": user.Session,
-    //       }
-    //     });
-    //     history.push("/submitcode");
-    //   })
-    //   .catch((err) => {
-    //     let error = err.message.split('error');
-    //     if (error[1]) {
-    //       setSignInMessage(`Error signing in: ${error[1]}`);
-    //     } else {
-    //       setSignInMessage(`Error signing in: ` + err.message);
-    //     }
-    //     setOpenFail(true);
-    //   });
-    history.push("/submitcode");
+    Auth.signIn({
+      username: username,
+    })
+      .then((user) => {
+        currentUser.setUser(user);
+        console.log(user);
+        postUserById(user.challengeParam.USERNAME, {
+          "cognitoUser": {
+            "username": username,
+            "session": user.Session,
+          }
+        });
+        history.push("/submitcode");
+      })
+      .catch((err) => {
+        let error = err.message.split('error');
+        if (error[1]) {
+          setSignInMessage(`Error signing in: ${error[1]}`);
+        } else {
+          setSignInMessage(`Error signing in: ` + err.message);
+        }
+        setOpenFail(true);
+      });
   }
 
   const handleSubmit = (event) => {
@@ -132,12 +132,12 @@ export default function SignInSide() {
     }
   }
 
-  // const handleClose = (event, reason) => {
-  //   if (reason === "clickaway") {
-  //     return;
-  //   }
-  //   setOpenFail(false);
-  // };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenFail(false);
+  };
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -178,9 +178,9 @@ export default function SignInSide() {
             >
               Get Verification Code
             </Button>
-            {/* <Snackbar open={openFail} autoHideDuration={5000} onClose={handleClose}>
+            <Snackbar open={openFail} autoHideDuration={5000} onClose={handleClose}>
               <Alert style={{ textAlign: "left" }} onClose={handleClose} severity="error">{signInMessage}</Alert>
-            </Snackbar> */}
+            </Snackbar>
             <Grid container justify="center">
               <Grid item>
                 <SignUpLink></SignUpLink>

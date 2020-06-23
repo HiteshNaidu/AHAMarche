@@ -39,7 +39,7 @@ function CheckboxContent() {
     <Typography variant="caption">
       {'I agree to '}
       <Link style={{ lineHeight: "0" }} color="primary" href="/privacy">
-        AHAMarché WeatherSafe Terms & Conditions
+        AHAMarché Terms & Conditions
       </Link>{'.'}
     </Typography>
   );

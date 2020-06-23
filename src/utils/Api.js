@@ -32,7 +32,7 @@ export const getCurrentUser = async () => {
 export const getUserById = async userId => {
   try {
     return await api.get(
-      config.api.endpoints.user + "/" + userId /*+ "?sort=" + userId*/
+      config.api.endpoints.user + "/user-" + userId /*+ "?sort=" + userId*/
     );
   } catch (e) {
     console.log("Error calling getUserById API: ", e);
@@ -43,7 +43,7 @@ export const getUserById = async userId => {
 export const postUserById = async (userId, body) => {
   try {
     return await api.put(
-      config.api.endpoints.user + "/" + userId, body
+      config.api.endpoints.user + "/user-" + userId, body
     );
   } catch (e) {
     console.log("Error calling postUserById API: ", e);
@@ -54,7 +54,7 @@ export const postUserById = async (userId, body) => {
 export const deleteUserById = async userId => {
   try {
     return await api.delete(
-      config.api.endpoints.user + "/" + userId
+      config.api.endpoints.user + "/user-" + userId
     );
   } catch (e) {
     console.log("Error calling deleteUserById API: ", e);

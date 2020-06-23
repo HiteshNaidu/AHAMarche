@@ -17,6 +17,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import UpdateLocation from "../../utils/UpdateLocation";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import { Auth } from 'aws-amplify';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -38,7 +39,7 @@ function CheckboxContent() {
     <Typography variant="caption">
       {'I agree to '}
       <Link style={{ lineHeight: "0" }} color="primary" href="/privacy">
-        AHAMarché WeatherSafe Terms & Conditions
+        AHAMarché Terms & Conditions
       </Link>{'.'}
     </Typography>
   );
@@ -113,54 +114,54 @@ export default function SignUnSide() {
   const [isChecked, setIsChecked] = useState(false);
   const [mobileErrorMessage, setMobileErrorMessage] = useState('');
   const [mobileErrorState, setMobileErrorState] = useState(false);
-  var routeToSignIn = true; // needs to be changed later
+  var routeToSignIn = false; // needs to be changed later
 
   // eslint-disable-next-line
   const phoneRegExp = /^(\+1)?\(?\d{3}\)?[]?\d{3}[]?\d{4}$/;
 
   async function signUp() {
-    // await Auth.signUp({
-    //   username: username,
-    //   password: generatePassword(),
-    //   attributes: {
-    //     'custom:City': selectedLocation
-    //   }
-    // })
-    //   .then((user) => {
-    //     routeToSignIn = true;
-    //   })
-    //   .catch((err) => {
-    //     let error = err.message.split('error');
-    //     if (error[1]) {
-    //       setSignUpMessage(`Error signing up: ${error[1]}`);
-    //     } else {
-    //       setSignUpMessage(`Error signing up: ` + err.message);
-    //     }
-    //     setOpenFail(true);
-    //   })
-    routeToSignIn = true;
+    await Auth.signUp({
+      username: username,
+      password: generatePassword(),
+      attributes: {
+        'custom:city': selectedLocation.key
+      }
+    })
+      .then((user) => {
+        routeToSignIn = true;
+      })
+      .catch((err) => {
+        let error = err.message.split('error');
+        console.log(err.message);
+        if (error[1]) {
+          setSignUpMessage(`Error signing up: ${error[1]}`);
+        } else {
+          setSignUpMessage(`Error signing up: ` + err.message);
+        }
+        setOpenFail(true);
+      })
   }
 
-  // const generatePassword = () => {
-  //   var result, result1, result2, result3 = '';
-  //   var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-  //   var numbers = '0123456789';
-  //   var specialChars = '!@_"#$%&()*+,-./;:<=>?[]^`{}|~';
-  //   var charactersLength = characters.length;
-  //   for (var i = 0; i < 20; i++) {
-  //     result1 += characters.charAt(Math.floor(Math.random() * charactersLength));
-  //   }
-  //   var numbersLength = numbers.length;
-  //   for (var j = 0; j < 5; j++) {
-  //     result2 += numbers.charAt(Math.floor(Math.random() * numbersLength));
-  //   }
-  //   var specialCharsLength = specialChars.length;
-  //   for (var k = 0; k < 5; k++) {
-  //     result3 += specialChars.charAt(Math.floor(Math.random() * specialCharsLength));
-  //   }
-  //   result = result1 + result2 + result3;
-  //   return result;
-  // }
+  const generatePassword = () => {
+    var result, result1, result2, result3 = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    var numbers = '0123456789';
+    var specialChars = '!@_"#$%&()*+,-./;:<=>?[]^`{}|~';
+    var charactersLength = characters.length;
+    for (var i = 0; i < 20; i++) {
+      result1 += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    var numbersLength = numbers.length;
+    for (var j = 0; j < 5; j++) {
+      result2 += numbers.charAt(Math.floor(Math.random() * numbersLength));
+    }
+    var specialCharsLength = specialChars.length;
+    for (var k = 0; k < 5; k++) {
+      result3 += specialChars.charAt(Math.floor(Math.random() * specialCharsLength));
+    }
+    result = result1 + result2 + result3;
+    return result;
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -172,7 +173,6 @@ export default function SignUnSide() {
     if (username.match(phoneRegExp)) {
       setMobileErrorMessage('');
       setMobileErrorState(false);
-      console.log(selectedLocation);
       if (selectedLocation !== null) {
         if (selectedLocation.length !== 0) {
           if (isChecked) {
