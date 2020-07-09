@@ -35,7 +35,6 @@ const useStyles = makeStyles(theme => ({
     height: "4em",
     width: '100%', // Fix IE 11 issue.
     fontWeight: "unset",
-    boxShadow: "0px 0px 0px 0px rgba(0,0,0,0.2), 0px 0px 0px 0px rgba(0,0,0,0.14), 0px 0px 0px 0px rgba(0,0,0,0.12)",
     marginTop: theme.spacing(1.5),
   }
 }));
@@ -44,12 +43,8 @@ const Welcome = props => {
   const classes = useStyles();
   let history = useHistory();
 
-  const handleCustomerSignUp = () => {
-    history.push("/customersignup");
-  };
-
-  const handleDriverSignUp = () => {
-    history.push("/Driversignup");
+  const handleSignUp = () => {
+    history.push("/signup");
   };
 
   const handleSignin = () => {
@@ -72,16 +67,8 @@ const Welcome = props => {
                 className={classes.button}
                 variant="contained"
                 color="primary"
-                onClick={handleCustomerSignUp}>
-                Sign Up as a Customer
-              </Button>
-              <Button
-                fullWidth
-                className={classes.button}
-                variant="contained"
-                color="primary"
-                onClick={handleDriverSignUp}>
-                Sign Up as a Driver
+                onClick={handleSignUp}>
+                Sign Up
               </Button>
               <Button
                 fullWidth

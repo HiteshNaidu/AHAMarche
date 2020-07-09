@@ -6,9 +6,9 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-// import MoreIcon from "@material-ui/icons/MoreVert";
 import MoreIcon from "@material-ui/icons/Menu";
-import SettingsIcon from '@material-ui/icons/Settings';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { useHistory } from "react-router-dom";
 import { Auth } from "aws-amplify";
@@ -22,10 +22,6 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2)
   },
   title: {
-    // display: "none",
-    // backgroundColor: "white",
-    // borderRadius: "0.3em",
-    // marginBottom: "8px",
     color: "white",
     maxWidth: 140,
     [theme.breakpoints.up("sm")]: {
@@ -44,9 +40,6 @@ const useStyles = makeStyles(theme => ({
       display: "none"
     }
   },
-  appbar: {
-    boxShadow: "0px 0px 0px 0px #90caf9, 0px 0px 0px 0px #90caf9, 0px 1px 10px 0px #90caf9",
-  }
 }));
 
 export default function PrimarySearchAppBar() {
@@ -68,18 +61,17 @@ export default function PrimarySearchAppBar() {
     window.location.reload();
   }
 
-  async function handleSettings() {
-    history.push("/settings");
+  async function handleProfile() {
+    history.push("/profile");
   }
 
+  async function handleDriverView() {
+    history.push("/DriverSignUp");
+  }
 
   async function handleHome() {
     history.push("/home");
   }
-
-  // const handleProfileMenuOpen = event => {
-  //   setAnchorEl(event.currentTarget);
-  // };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -115,23 +107,23 @@ export default function PrimarySearchAppBar() {
     } else {
       return (
         <div>
-          <MenuItem onClick={handleSettings}>
+          <MenuItem onClick={handleProfile}>
             <IconButton
-              aria-label="show settings"
-              color="inherit"
+              aria-label="show profile"
             >
-              <SettingsIcon style={{ color: "#424242" }} />
+              <AccountCircleIcon style={{ color: "#424242" }} />
             </IconButton>
-            <p>Settings</p>
+            <p>Profile</p>
           </MenuItem>
 
-          {/* <MenuItem onClick={handleNotification}>
+          <MenuItem onClick={handleDriverView}>
             <IconButton
-              aria-label="show new notifications"
-              color="inherit"
-            ></IconButton>
-            <p>Notifications</p>
-          </MenuItem> */}
+              aria-label="driver view"
+            >
+              <LocalShippingIcon style={{ color: "#424242" }}></LocalShippingIcon>
+            </IconButton>
+            <p>Register as a Driver</p>
+          </MenuItem>
         </div>
       );
     }
@@ -173,37 +165,35 @@ export default function PrimarySearchAppBar() {
       return (
         <>
           <IconButton
-            aria-label="settings"
+            aria-label="profile"
             color="inherit"
-            onClick={handleSettings}
+            onClick={handleProfile}
           >
-            <Typography style={{ color: "white" }}>Settings</Typography>
+            <Typography style={{ color: "white" }}>Profile</Typography>
           </IconButton>
 
-          {/* <IconButton
-            aria-label="notification"
+          <IconButton
+            aria-label="driver view"
             color="inherit"
-            onClick={handleNotification}
+            onClick={handleDriverView}
           >
-            <Typography>Notifications</Typography>
-          </IconButton> */}
+            <Typography>Register as a Driver</Typography>
+          </IconButton>
         </>
       );
     }
   };
 
   return (
-    // value && (
     <div className={classes.grow}>
-      <AppBar position="static" className={classes.appbar}>
+      <AppBar position="static">
         <Toolbar>
-          {/* <img src="../imgs/WeatherSafeLogo_white.png" alt="logo" className={classes.title} onClick={handleHome} /> */}
           <Typography
             variant="h5"
             className={classes.title}
             onClick={handleHome}
           >
-            WalletApp
+            AHAMarché
           </Typography>
 
           <div className={classes.grow} />
@@ -216,7 +206,6 @@ export default function PrimarySearchAppBar() {
               onClick={handleLogout}
               color="inherit"
             >
-              {/* <ExitToApp /> */}
               <Typography style={{ color: "white" }}>Logout</Typography>
             </IconButton>
           </div>
@@ -236,6 +225,5 @@ export default function PrimarySearchAppBar() {
       {renderMobileMenu}
       {renderMenu}
     </div>
-    // )
   );
 }
