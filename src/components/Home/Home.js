@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -11,6 +11,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import NavBar from '../NavBar/NavBar';
 import CategoryFilter from './CategoryFilter';
+import { APIContext, AuthContext } from "../../App";
+import { getCurrentUser, getUserById } from "../../utils/Api";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -48,8 +50,35 @@ const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 export default function Home() {
   const classes = useStyles();
+  const currentUser = useContext(AuthContext);
+  const value = useContext(APIContext);
 
-  const [selectedCategory, setSelectedCategory] = useState('');
+  // Get current user upon initial load
+  useEffect(() => {
+    async function getUserFromAPI() {
+      try {
+        const user = await getCurrentUser();
+        currentUser.setUser(user);
+
+        let data = await getUserById(user.attributes.sub);
+        if (data) {
+          value.setUsername(data.data.phone);
+          value.setCity(data.data.city);
+          value.setFirstname(data.data.firstname);
+          value.setLastname(data.data.lastname);
+          value.setIsDriver(data.data.isDriver);
+          value.setDeliveriesCompleted(data.data.deliveriesCompleted);
+          value.setVehicleType(data.data.vehicleType);
+          value.setLinkToS3(data.data.linkToS3);
+        }
+      } catch (e) {
+        console.log("Error getting current user: ", e);
+      }
+    }
+
+    getUserFromAPI();
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <React.Fragment>
@@ -64,7 +93,7 @@ export default function Home() {
             <Typography variant="h6" align="center" color="textSecondary" paragraph>
               Please select the category you want to explore
             </Typography>
-            <CategoryFilter setSelectedCategory={setSelectedCategory}></CategoryFilter>
+            <CategoryFilter setSelectedCategory={value.setSelectedCategory}></CategoryFilter>
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
                 <Grid item>

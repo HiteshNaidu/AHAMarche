@@ -11,11 +11,36 @@ const App = () => {
   const [isAuthenticated, userHasAuthenticated] = useState(false);
   const [user, setUser] = useState({});
   const [username, setUsername] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
   const [city, setCity] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isDriver, setIsDriver] = useState(false);
+  const [deliveriesCompleted, setDeliveriesCompleted] = useState(0);
+  const [vehicleType, setVehicleType] = useState("");
+  const [linkToS3, setLinkToS3] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState('Home');
 
   const AuthState = {user, setUser};
-  const APIState = {username, setUsername, city, setCity, isAdmin, setIsAdmin};
+  const APIState = {
+    username, 
+    setUsername, 
+    city, 
+    setCity,
+    firstname,
+    setFirstname,
+    lastname,
+    setLastname, 
+    isDriver, 
+    setIsDriver,
+    deliveriesCompleted,
+    setDeliveriesCompleted,
+    vehicleType,
+    setVehicleType,
+    linkToS3,
+    setLinkToS3,
+    selectedCategory,
+    setSelectedCategory
+  };
 
   async function onLoad() {
     try {
@@ -28,7 +53,6 @@ const App = () => {
 
   // Get current user upon initial load
   useEffect(() => {
-    // window.sessionStorage.setItem("cookieMessageRead", "true");
     onLoad();
   }, []);
 

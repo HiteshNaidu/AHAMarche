@@ -25,7 +25,7 @@ function SignUpLink() {
   return (
     <Typography variant="body2">
       {"Don't have an account? "}
-      <Link color="primary" href="/" variant="body2" underline="always">
+      <Link color="primary" href="/signup" variant="body2" underline="always">
         SIGN UP
       </Link>
     </Typography>
@@ -89,7 +89,6 @@ export default function SignInSide() {
     })
       .then((user) => {
         currentUser.setUser(user);
-        console.log(user);
         postUserById(user.challengeParam.USERNAME, {
           "cognitoUser": {
             "username": username,

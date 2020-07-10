@@ -48,14 +48,6 @@ const useStyles1 = makeStyles(theme => ({
   pos: {
     backgroundColor: grey
   },
-  button: {
-    borderRadius: "1.75em",
-    height: "4em",
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1.5),
-    color: "white",
-    fontWeight: "unset",
-  },
   button2: {
     background: "white",
     borderRadius: "1.75em",
@@ -206,7 +198,7 @@ export default function Settings() {
       </div>
       <div className={classes1.pos}>
         <Container maxWidth="md">
-          <Card className={classes1.card}>
+          <Card >
             <CardContent>
               <Typography className={classes1.title} variant="h5" component="h2">
                 Account Ownership
@@ -226,11 +218,12 @@ export default function Settings() {
               <br />
               <br />
               <Typography className={classes1.title} style={{ paddingRight: "25px" }} variant="body2" color="textSecondary">
-                Deleting your account is permanent. When you delete your WeatherSafe account you will not be able to access your content. You will be able to sign up again at anytime after deleting your account.
+                If you delete your AHAMarché account you will not be able to access your content. You will be able to sign up again at anytime after deleting your account but the content that you had on AHAMarché earlier will no longer exist.
               </Typography>
               <DeleteAccountOption state={state}></DeleteAccountOption>
             </CardContent>
           </Card>
+          <br />
           <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
             <Alert style={{ backgroundColor: "#66bb6a", textAlign: "left" }} onClose={handleClose}>{message}</Alert>
           </Snackbar>

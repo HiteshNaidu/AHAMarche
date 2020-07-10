@@ -11,7 +11,6 @@ import {
   Typography,
   Divider,
   Button,
-  LinearProgress
 } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -79,13 +78,6 @@ const AccountProfile = props => {
           <Avatar
             className={classes.avatar}
             src={user.avatar}
-          />
-        </div>
-        <div className={classes.progress}>
-          <Typography variant="body1">Profile Completeness: 70%</Typography>
-          <LinearProgress
-            value={70}
-            variant="determinate"
           />
         </div>
       </CardContent>

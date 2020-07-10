@@ -1,7 +1,7 @@
-import React/*, { useContext }*/ from "react";
+import React, { useContext } from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-// import { APIContext } from "../App";
+import { APIContext } from "../../App";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => {
@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => {
 
 export default function CategoryFilter(props) {
     const classes = useStyles();
-    // const currentValue = useContext(APIContext);
+    const currentValue = useContext(APIContext);
 
     const category = ['Home', 'Clothing', 'Electronics', 'Automotive', 'Books', 'Tools', 'Beauty', 'Health', 'Sports', 'Toy'];
 
@@ -33,7 +33,7 @@ export default function CategoryFilter(props) {
         <>
             <Autocomplete
                 classes={classes}
-                defaultValue={category[0]}
+                defaultValue={currentValue.selectedCategory}
                 autoComplete
                 id="tags-outlined"
                 options={category}

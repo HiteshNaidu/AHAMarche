@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundPosition: 'center',
   },
   paper: {
-    margin: theme.spacing(8, 2),
+    margin: theme.spacing(4, 2),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -68,10 +68,10 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(5),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(4, 0, 2),
     borderRadius: "1.75em",
     height: "4em",
     width: '100%', // Fix IE 11 issue.
@@ -92,7 +92,13 @@ export default function SignUnSide() {
   let history = useHistory();
 
   var [username, setUsername] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [selectedLocation, setSelectedLocation] = useState([]);
+  const [errF, setErrF] = useState(false);
+  const [errMessageF, setErrMessageF] = useState('');
+  const [errL, setErrL] = useState(false);
+  const [errMessageL, setErrMessageL] = useState('');
   const [err, setErr] = useState(false);
   const [errMessage, setErrMessage] = useState('');
   const [openFail, setOpenFail] = useState(false);
@@ -104,13 +110,16 @@ export default function SignUnSide() {
 
   // eslint-disable-next-line
   const phoneRegExp = /^(\+1)?\(?\d{3}\)?[]?\d{3}[]?\d{4}$/;
+  const nameRegExp = /^[A-Za-z]+$/;
 
   async function signUp() {
     await Auth.signUp({
       username: username,
       password: generatePassword(),
       attributes: {
-        'custom:city': selectedLocation.key
+        'custom:city': selectedLocation.key,
+        'custom:firstname': firstName,
+        'custom:lastname': lastName
       }
     })
       .then((user) => {
@@ -159,24 +168,38 @@ export default function SignUnSide() {
     if (username.match(phoneRegExp)) {
       setMobileErrorMessage('');
       setMobileErrorState(false);
-      if (selectedLocation !== null) {
-        if (selectedLocation.length !== 0) {
-          if (isChecked) {
-            await signUp();
-            if (routeToSignIn) {
-              history.push("/signin");
+      if (firstName.match(nameRegExp)) {
+        setErrMessageF('');
+        setErrF(false);
+        if (lastName.match(nameRegExp)) {
+          setErrMessageL('');
+          setErrL(false);
+          if (selectedLocation !== null) {
+            if (selectedLocation.length !== 0) {
+              if (isChecked) {
+                await signUp();
+                if (routeToSignIn) {
+                  history.push("/signin");
+                }
+              } else {
+                setSignUpMessage('Please check that you agree with AHAMarché Terms & Conditions to proceed further.');
+                setOpenFail(true);
+              }
+            } else {
+              setErrMessage("Please select a city");
+              setErr(true);
             }
           } else {
-            setSignUpMessage('Please check that you agree with AHAMarché Terms & Conditions to proceed further.');
-            setOpenFail(true);
+            setErrMessage("Please select a city");
+            setErr(true);
           }
         } else {
-          setErrMessage("Please select a city");
-          setErr(true);
+          setErrMessageL('Please enter a valid lastname');
+          setErrL(true);
         }
       } else {
-        setErrMessage("Please select a city");
-        setErr(true);
+        setErrMessageF('Please enter a valid firstname');
+        setErrF(true);
       }
     } else {
       setMobileErrorMessage('Please enter a valid phone number');
@@ -189,6 +212,16 @@ export default function SignUnSide() {
       setUsername(event.target.value);
       setMobileErrorMessage('');
       setMobileErrorState(false);
+    }
+    if (event.target.id === 'fn') {
+      setFirstName(event.target.value);
+      setErrMessageF('');
+      setErrF(false);
+    }
+    if (event.target.id === 'ln') {
+      setLastName(event.target.value);
+      setErrMessageL('');
+      setErrL(false);
     }
   }
 
@@ -216,30 +249,65 @@ export default function SignUnSide() {
             Customer Sign up
           </Typography>
           <form className={classes.form} onSubmit={handleSubmit} noValidate>
-            <TextField
-              InputProps={{
-                startAdornment: <InputAdornment position="start"><p style={{ color: 'black' }}>+1</p></InputAdornment>,
-              }}
-              error={mobileErrorState}
-              helperText={mobileErrorMessage}
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="phone"
-              label="Phone Number"
-              name="phone"
-              autoComplete="phone"
-              autoFocus
-              onChange={handleChange}
-            />
-            <UpdateLocation setSelectedLocation={setSelectedLocation} err={err} setErr={setErr} errMessage={errMessage} setErrMessage={setErrMessage}></UpdateLocation>
-            <FormControlLabel
-              className={classes.formLabel}
-              control={<Checkbox className={classes.checkbox} value="userAgreed" color="primary" />}
-              label={<CheckboxContent />}
-              onChange={handleCheckboxChange}
-            />
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start"><p style={{ color: 'black' }}>+1</p></InputAdornment>,
+                  }}
+                  error={mobileErrorState}
+                  helperText={mobileErrorMessage}
+                  variant="outlined"
+                  autoFocus
+                  required
+                  fullWidth
+                  id="phone"
+                  label="Phone Number"
+                  name="phone"
+                  autoComplete="phone"
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  error={errF}
+                  helperText={errMessageF}
+                  autoComplete="fname"
+                  name="firstName"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="fn"
+                  label="First Name"
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  error={errL}
+                  helperText={errMessageL}
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="ln"
+                  label="Last Name"
+                  name="lastName"
+                  autoComplete="lname"
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <UpdateLocation setSelectedLocation={setSelectedLocation} err={err} setErr={setErr} errMessage={errMessage} setErrMessage={setErrMessage}></UpdateLocation>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  className={classes.formLabel}
+                  control={<Checkbox className={classes.checkbox} value="userAgreed" color="primary" />}
+                  label={<CheckboxContent />}
+                  onChange={handleCheckboxChange}
+                />
+              </Grid>
+            </Grid>
             <Button
               type="submit"
               fullWidth
