@@ -17,6 +17,7 @@ import UpdateLocation from "../../utils/UpdateLocation";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { Auth } from 'aws-amplify';
+import { postUserById } from '../../utils/Api';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -117,13 +118,14 @@ export default function SignUnSide() {
       username: username,
       password: generatePassword(),
       attributes: {
-        'custom:city': selectedLocation.key,
+        'custom:city': selectedLocation.name_e,
         'custom:firstname': firstName,
         'custom:lastname': lastName
       }
     })
       .then((user) => {
         routeToSignIn = true;
+        postUserById(user.userSub, { "cityItem": selectedLocation });
       })
       .catch((err) => {
         let error = err.message.split('error');

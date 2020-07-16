@@ -1,8 +1,8 @@
-import React/*, { useContext }*/ from "react";
+import React, { useContext } from "react";
 import { cityData } from "./LatLon";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-// import { APIContext } from "../App";
+import { APIContext } from "../App";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => {
@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => {
 
 export default function UpdateLocations(props) {
     const classes = useStyles();
-    // const currentValue = useContext(APIContext);
+    const value = useContext(APIContext);
 
     const handleChange = (event, values) => {
         props.setSelectedLocation(values);
@@ -33,7 +33,7 @@ export default function UpdateLocations(props) {
         <>
             <Autocomplete
                 classes={classes}
-                // defaultValue={currentValue.locations}
+                defaultValue={value.cityItem}
                 autoComplete
                 id="tags-outlined"
                 options={cityData}

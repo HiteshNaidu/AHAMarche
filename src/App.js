@@ -14,6 +14,7 @@ const App = () => {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [city, setCity] = useState("");
+  const [cityItem, setCityItem] = useState({});
   const [isDriver, setIsDriver] = useState(false);
   const [deliveriesCompleted, setDeliveriesCompleted] = useState(0);
   const [vehicleType, setVehicleType] = useState("");
@@ -26,6 +27,8 @@ const App = () => {
     setUsername, 
     city, 
     setCity,
+    cityItem,
+    setCityItem,
     firstname,
     setFirstname,
     lastname,

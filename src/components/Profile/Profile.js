@@ -142,7 +142,7 @@ export default function Settings() {
             </Button>
             <Snackbar open={deletionToast} autoHideDuration={6000} onClose={handleClose}>
               <Alert style={{ backgroundColor: "#66bb6a" }} icon={false}>
-                We're sorry to see you go! Your WeatherSafe account has now been deleted.
+                We're sorry to see you go! Your AHAMarché account has now been deleted.
               </Alert>
             </Snackbar>
           </Container>
@@ -194,43 +194,54 @@ export default function Settings() {
           >
             <AccountDetails />
           </Grid>
-        </Grid>
-      </div>
-      <div className={classes1.pos}>
-        <Container maxWidth="md">
-          <Card >
-            <CardContent>
-              <Typography className={classes1.title} variant="h5" component="h2">
-                Account Ownership
+          <Grid
+            item
+            lg={4}
+            md={6}
+            xl={4}
+            xs={12}
+          ></Grid>
+          <Grid
+            item
+            lg={8}
+            md={6}
+            xl={8}
+            xs={12}
+          >
+            <Card >
+              <CardContent>
+                <Typography className={classes1.title} variant="h5" component="h2">
+                  Account Ownership
               </Typography>
-              <br />
-              <br />
-              <div style={{ display: "inline-flex", width: "100%" }}>
-                <Grid item xs={11}>
-                  <Typography className={classes1.title} color="textSecondary">
-                    DELETE ACCOUNT
+                <br />
+                <br />
+                <div style={{ display: "inline-flex", width: "100%" }}>
+                  <Grid item xs={11}>
+                    <Typography className={classes1.title} color="textSecondary">
+                      DELETE ACCOUNT
                   </Typography>
-                </Grid>
-                <Grid item xs={1}>
-                  <IconButtonUpDown state={state}></IconButtonUpDown>
-                </Grid>
-              </div>
-              <br />
-              <br />
-              <Typography className={classes1.title} style={{ paddingRight: "25px" }} variant="body2" color="textSecondary">
-                If you delete your AHAMarché account you will not be able to access your content. You will be able to sign up again at anytime after deleting your account but the content that you had on AHAMarché earlier will no longer exist.
+                  </Grid>
+                  <Grid item xs={1}>
+                    <IconButtonUpDown state={state}></IconButtonUpDown>
+                  </Grid>
+                </div>
+                <br />
+                <br />
+                <Typography className={classes1.title} style={{ paddingRight: "25px" }} variant="body2" color="textSecondary">
+                  If you delete your AHAMarché account you will not be able to access your content. You will be able to sign up again at anytime after deleting your account but the content that you had on AHAMarché earlier will no longer exist.
               </Typography>
-              <DeleteAccountOption state={state}></DeleteAccountOption>
-            </CardContent>
-          </Card>
-          <br />
-          <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
-            <Alert style={{ backgroundColor: "#66bb6a", textAlign: "left" }} onClose={handleClose}>{message}</Alert>
-          </Snackbar>
-          <Snackbar open={openFail} autoHideDuration={5000} onClose={handleClose}>
-            <Alert style={{ textAlign: "left" }} onClose={handleClose} severity="error">{message}</Alert>
-          </Snackbar>
-        </Container>
+                <DeleteAccountOption state={state}></DeleteAccountOption>
+              </CardContent>
+            </Card>
+            <br />
+            <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+              <Alert style={{ backgroundColor: "#66bb6a", textAlign: "left" }} onClose={handleClose}>{message}</Alert>
+            </Snackbar>
+            <Snackbar open={openFail} autoHideDuration={5000} onClose={handleClose}>
+              <Alert style={{ textAlign: "left" }} onClose={handleClose} severity="error">{message}</Alert>
+            </Snackbar>
+          </Grid>
+        </Grid>
       </div>
     </>
   );

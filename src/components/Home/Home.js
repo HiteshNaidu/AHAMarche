@@ -64,6 +64,7 @@ export default function Home() {
         if (data) {
           value.setUsername(data.data.phone);
           value.setCity(data.data.city);
+          value.setCityItem(data.data.cityItem);
           value.setFirstname(data.data.firstname);
           value.setLastname(data.data.lastname);
           value.setIsDriver(data.data.isDriver);

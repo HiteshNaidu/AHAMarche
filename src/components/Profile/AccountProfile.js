@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import moment from 'moment';
 import { makeStyles } from '@material-ui/core/styles';
+import { APIContext } from '../../App';
 import {
   Card,
   CardActions,
@@ -35,15 +35,11 @@ const useStyles = makeStyles((theme) => ({
 
 const AccountProfile = props => {
   const { className, ...rest } = props;
-
+  const value = useContext(APIContext);
   const classes = useStyles();
 
   const user = {
-    name: 'Shen Zhi',
-    city: 'Los Angeles',
-    country: 'USA',
-    timezone: 'GTM-7',
-    avatar: '/images/avatars/avatar_11.png'
+    avatar: '../imgs/avatar.svg'
   };
 
   return (
@@ -58,21 +54,14 @@ const AccountProfile = props => {
               gutterBottom
               variant="h2"
             >
-              John Doe
+              {value.firstname + " " + value.lastname}
             </Typography>
             <Typography
               className={classes.locationText}
               color="textSecondary"
               variant="body1"
             >
-              {user.city}, {user.country}
-            </Typography>
-            <Typography
-              className={classes.dateText}
-              color="textSecondary"
-              variant="body1"
-            >
-              {moment().format('hh:mm A')} ({user.timezone})
+              {value.cityItem.name_e}, Canada
             </Typography>
           </div>
           <Avatar

@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import { APIContext } from '../../App';
+import UpdateLocation from "../../utils/UpdateLocation";
+import UpdateCarType from "../../utils/UpdateCarType";
 import { makeStyles } from '@material-ui/styles';
 import {
   Card,
@@ -19,39 +22,15 @@ const useStyles = makeStyles(() => ({
 
 const AccountDetails = props => {
   const { className, ...rest } = props;
-
+  const value = useContext(APIContext);
   const classes = useStyles();
 
-  const [values, setValues] = useState({
-    firstName: 'Shen',
-    lastName: 'Zhi',
-    email: 'shen.zhi@devias.io',
-    phone: '',
-    state: 'Alabama',
-    country: 'USA'
-  });
-
-  const handleChange = event => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
-  };
-
-  const states = [
-    {
-      value: 'alabama',
-      label: 'Alabama'
-    },
-    {
-      value: 'new-york',
-      label: 'New York'
-    },
-    {
-      value: 'san-francisco',
-      label: 'San Francisco'
-    }
-  ];
+  const [selectedLocation, setSelectedLocation] = useState([]);
+  const [err, setErr] = useState(false);
+  const [errMessage, setErrMessage] = useState('');
+  const [selectedType, setSelectedType] = useState([]);
+  const [errType, setErrType] = useState(false);
+  const [errTypeMessage, setErrTypeMessage] = useState('');
 
   return (
     <Card
@@ -63,7 +42,7 @@ const AccountDetails = props => {
         noValidate
       >
         <CardHeader
-          subheader="The information can be edited"
+          subheader="You can change you city at any time"
           title="Profile"
         />
         <Divider />
@@ -78,14 +57,11 @@ const AccountDetails = props => {
               xs={12}
             >
               <TextField
+                disabled
                 fullWidth
-                helperText="Please specify the first name"
-                label="First name"
-                margin="dense"
+                label="First Name"
                 name="firstName"
-                onChange={handleChange}
-                required
-                value={values.firstName}
+                value={value.firstname}
                 variant="outlined"
               />
             </Grid>
@@ -95,31 +71,60 @@ const AccountDetails = props => {
               xs={12}
             >
               <TextField
+                disabled
                 fullWidth
-                label="Last name"
-                margin="dense"
+                label="Last Name"
                 name="lastName"
-                onChange={handleChange}
-                required
-                value={values.lastName}
+                value={value.lastname}
                 variant="outlined"
               />
             </Grid>
+            {(value.vehicleType === "NA") ?
+              <>
+                <Grid
+                  item
+                  md={12}
+                  xs={12}
+                >
+                  <TextField
+                    disabled
+                    fullWidth
+                    label="Phone Number"
+                    name="phone"
+                    value={value.username}
+                    variant="outlined"
+                  />
+                </Grid>
+              </> :
+              <>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                  <TextField
+                    disabled
+                    fullWidth
+                    label="Phone Number"
+                    name="phone"
+                    value={value.username}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                  <UpdateCarType setSelectedType={setSelectedType} errType={errType} setErrType={setErrType} errTypeMessage={errTypeMessage} setErrTypeMessage={setErrTypeMessage}></UpdateCarType>
+                </Grid>
+              </>}
             <Grid
               item
               md={6}
               xs={12}
             >
-              <TextField
-                fullWidth
-                label="Email Address"
-                margin="dense"
-                name="email"
-                onChange={handleChange}
-                required
-                value={values.email}
-                variant="outlined"
-              />
+              <UpdateLocation setSelectedLocation={setSelectedLocation} err={err} setErr={setErr} errMessage={errMessage} setErrMessage={setErrMessage}></UpdateLocation>
             </Grid>
             <Grid
               item
@@ -127,57 +132,11 @@ const AccountDetails = props => {
               xs={12}
             >
               <TextField
-                fullWidth
-                label="Phone Number"
-                margin="dense"
-                name="phone"
-                onChange={handleChange}
-                type="number"
-                value={values.phone}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Select State"
-                margin="dense"
-                name="state"
-                onChange={handleChange}
-                required
-                select
-                // eslint-disable-next-line react/jsx-sort-props
-                SelectProps={{ native: true }}
-                value={values.state}
-                variant="outlined"
-              >
-                {states.map(option => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
+                disabled
                 fullWidth
                 label="Country"
-                margin="dense"
                 name="country"
-                onChange={handleChange}
-                required
-                value={values.country}
+                value="Canada"
                 variant="outlined"
               />
             </Grid>

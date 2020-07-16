@@ -8,7 +8,7 @@ export const api = axios.create({
   timeout: 60000
 });
 
-//Get updated session and refresh token is expired
+//Get updated session
 export const getUserSession = async () => {
   try {
     const session = await Auth.currentSession();
@@ -72,35 +72,13 @@ export const deleteCognitoUserById = async userId => {
   }
 };
 
-// function to publish demo text message
-export const publishDemoText = async (body) => {
+// GET list of items by category
+export const getItemsByCategory = async id => {
   try {
-    return await api.post(
-      config.api.endpoints.publishDemoText, body
+    return await api.get(
+      config.api.endpoints.category + "/" + id
     );
   } catch (e) {
-    console.log("Error calling publishDemoText API: ", e);
-  }
-};
-
-// Subscribe to respective SNS topics by phone number and locations
-export const subscribeSNS = async (userId, body) => {
-  try {
-    return await api.post(
-      config.api.endpoints.subscribe + "/" + userId, body
-    );
-  } catch (e) {
-    console.log("Error calling subscribeSNS API: ", e);
-  }
-};
-
-// UnSubscribe to respective SNS topics by phone number and locations
-export const unsubscribeSNS = async (userId, body) => {
-  try {
-    return await api.post(
-      config.api.endpoints.unsubscribe + "/" + userId, body
-    );
-  } catch (e) {
-    console.log("Error calling unsubscribeSNS API: ", e);
+    console.log("Error calling getItemsByCategory API: ", e);
   }
 };
