@@ -12,7 +12,7 @@ import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { useHistory } from "react-router-dom";
 import { Auth } from "aws-amplify";
-import APIContext from "../../App";
+import { APIContext } from "../../App";
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -69,6 +69,10 @@ export default function PrimarySearchAppBar() {
     history.push("/DriverSignUp");
   }
 
+  async function handleDashboard() {
+    history.push("/dashboard");
+  }
+
   async function handleHome() {
     history.push("/home");
   }
@@ -116,14 +120,28 @@ export default function PrimarySearchAppBar() {
             <p>Profile</p>
           </MenuItem>
 
-          <MenuItem onClick={handleDriverView}>
-            <IconButton
-              aria-label="driver view"
-            >
-              <LocalShippingIcon style={{ color: "#424242" }}></LocalShippingIcon>
-            </IconButton>
-            <p>Register as a Driver</p>
-          </MenuItem>
+          {(value.isDriver) ?
+            <>
+              <MenuItem onClick={handleDashboard}>
+                <IconButton
+                  aria-label="driver view"
+                >
+                  <LocalShippingIcon style={{ color: "#424242" }}></LocalShippingIcon>
+                </IconButton>
+                <p>Dashboard</p>
+              </MenuItem>
+            </>
+            :
+            <>
+              <MenuItem onClick={handleDriverView}>
+                <IconButton
+                  aria-label="driver view"
+                >
+                  <LocalShippingIcon style={{ color: "#424242" }}></LocalShippingIcon>
+                </IconButton>
+                <p>Register as a Driver</p>
+              </MenuItem>
+            </>}
         </div>
       );
     }
@@ -172,13 +190,26 @@ export default function PrimarySearchAppBar() {
             <Typography style={{ color: "white" }}>Profile</Typography>
           </IconButton>
 
-          <IconButton
-            aria-label="driver view"
-            color="inherit"
-            onClick={handleDriverView}
-          >
-            <Typography>Register as a Driver</Typography>
-          </IconButton>
+          {(value.isDriver ?
+            <>
+              <IconButton
+                aria-label="driver view"
+                color="inherit"
+                onClick={handleDashboard}
+              >
+                <Typography>Dashboard</Typography>
+              </IconButton>
+            </>
+            :
+            <>
+              <IconButton
+                aria-label="driver view"
+                color="inherit"
+                onClick={handleDriverView}
+              >
+                <Typography>Register as a Driver</Typography>
+              </IconButton>
+            </>)}
         </>
       );
     }

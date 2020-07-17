@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import NavBar from "../NavBar/NavBar";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -7,7 +7,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
-// import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -15,6 +14,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import UpdateCarType from "../../utils/UpdateCarType";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import { AuthContext } from "../../App";
+import { postUserById } from "../../utils/Api";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -76,14 +77,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUnSide() {
   const classes = useStyles();
+  const currentUser = useContext(AuthContext);
 
-  const [selectedType, setSelectedType] = useState([]);
+  const [selectedType, setSelectedType] = useState("");
   const [errType, setErrType] = useState(false);
   const [errTypeMessage, setErrTypeMessage] = useState('');
+  const [open, setOpen] = useState(false);
   const [openFail, setOpenFail] = useState(false);
   const [signUpMessage, setSignUpMessage] = useState('');
   const [isChecked, setIsChecked] = useState(false);
-  var routeToDashboard = true; // needs to be changed later
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -93,9 +95,9 @@ export default function SignUnSide() {
         if (isChecked) {
           // Post to DB
           // display a success toast to the user on successful registeration
-          if (routeToDashboard) {
-            window.location.reload();
-          }
+          await postUserById(currentUser.user.attributes.sub, { "isDriver": true });
+          await postUserById(currentUser.user.attributes.sub, { "vehicleType": selectedType });
+          setOpen(true);
         } else {
           setSignUpMessage('Please check that you agree with AHAMarché Drivers - Terms & Conditions to proceed further.');
           setOpenFail(true);
@@ -117,6 +119,9 @@ export default function SignUnSide() {
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
+    }
+    if (open) {
+      window.location.reload();
     }
     setOpenFail(false);
   };
@@ -152,9 +157,14 @@ export default function SignUnSide() {
                 className={classes.submit}
               >
                 Register me as Driver
-            </Button>
+              </Button>
               <Snackbar open={openFail} autoHideDuration={5000} onClose={handleClose}>
                 <Alert style={{ textAlign: "left" }} onClose={handleClose} severity="error">{signUpMessage}</Alert>
+              </Snackbar>
+              <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+                <Alert style={{ textAlign: "left" }} onClose={handleClose} severity="success">
+                  You've been successfully signed up as a driver with AHAMarché
+                </Alert>
               </Snackbar>
             </form>
           </div>

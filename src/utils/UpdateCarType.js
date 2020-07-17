@@ -1,7 +1,7 @@
-import React/*, { useContext }*/ from "react";
+import React, { useContext } from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-// import { APIContext } from "../App";
+import { APIContext } from "../App";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => {
@@ -16,9 +16,9 @@ const useStyles = makeStyles(theme => {
 
 export default function UpdateLocations(props) {
     const classes = useStyles();
-    // const currentValue = useContext(APIContext);
-    
-    const vehicleType = [{ "type": "Hatchback" }, { "type": "Sedan" }, { "type": "SUV" }, { "type": "Truck" }];
+    const value = useContext(APIContext);
+
+    const vehicleType = ["Hatchback", "Sedan", "SUV", "Truck"];
 
     const handleChange = (event, values) => {
         props.setSelectedType(values);
@@ -35,11 +35,11 @@ export default function UpdateLocations(props) {
             <Autocomplete
                 style={{ marginTop: "8px" }}
                 classes={classes}
-                // defaultValue={currentValue.locations}
+                defaultValue={value.vehicleType}
                 autoComplete
                 id="tags-outlined"
                 options={vehicleType}
-                getOptionLabel={option => option.type}
+                getOptionLabel={option => option}
                 onChange={handleChange}
                 renderInput={params => (
                     <>
