@@ -20,6 +20,7 @@ const App = () => {
   const [vehicleType, setVehicleType] = useState("");
   const [linkToS3, setLinkToS3] = useState("");
   const [selectedCategory, setSelectedCategory] = useState('Home');
+  const [itemList, setItemList] = useState([]);
 
   const AuthState = {user, setUser};
   const APIState = {
@@ -42,7 +43,9 @@ const App = () => {
     linkToS3,
     setLinkToS3,
     selectedCategory,
-    setSelectedCategory
+    setSelectedCategory,
+    itemList,
+    setItemList,
   };
 
   async function onLoad() {

@@ -42,7 +42,7 @@ const AccountDetails = props => {
         noValidate
       >
         <CardHeader
-          subheader="You can change you city at any time"
+          subheader="You can change your city at any time"
           title="Profile"
         />
         <Divider />
