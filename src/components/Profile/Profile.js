@@ -21,6 +21,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
 import AccountProfile from './AccountProfile';
 import AccountDetails from './AccountDetails';
+import UploadedItems from "./UploadedItems/UploadedItems";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -200,7 +201,9 @@ export default function Settings() {
             md={6}
             xl={4}
             xs={12}
-          ></Grid>
+          >
+            <UploadedItems></UploadedItems>
+          </Grid>
           <Grid
             item
             lg={8}

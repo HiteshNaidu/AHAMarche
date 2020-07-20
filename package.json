@@ -1,5 +1,5 @@
 {
-  "name": "AHAMarche",
+  "name": "ahamarche",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,10 +12,14 @@
     "aws-amplify-react": "^3.1.3",
     "aws-sdk": "^2.613.0",
     "axios": "^0.19.2",
+    "chart.js": "^2.9.3",
     "material-table": "^1.55.0",
+    "moment": "^2.24.0",
     "react": "^16.12.0",
+    "react-chartjs-2": "^2.9.0",
     "react-dom": "^16.12.0",
     "react-otp-input": "^1.0.1",
+    "react-perfect-scrollbar": "^1.5.8",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
     "react-swipeable-views": "^0.13.9",

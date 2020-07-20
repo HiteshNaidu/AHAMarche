@@ -97,8 +97,11 @@ export default function ItemCard(prop) {
                                 <Button className={classes.cardButton} size="large" color="primary" disableFocusRipple disableRipple disableTouchRipple disabled>
                                     {prop.card.price}
                                 </Button>
-                                <Button size="small" color="primary" variant="contained">
+                                <Button size="small" color="primary" variant="outlined">
                                     Contact Seller
+                                </Button>
+                                <Button size="small" color="primary" variant="contained">
+                                    Get Item Delivered
                                 </Button>
                             </CardActions>
                         </Card>
@@ -123,6 +126,9 @@ export default function ItemCard(prop) {
                 <ItemModal card={prop.card}></ItemModal>
             </CardContent>
             <CardActions>
+                <Button className={classes.cardButton} size="large" color="primary" disableFocusRipple disableRipple disableTouchRipple disabled>
+                    {prop.card.price}
+                </Button>
                 <Button size="small" color="primary" variant="contained" onClick={handleOpen}>
                     View
                 </Button>

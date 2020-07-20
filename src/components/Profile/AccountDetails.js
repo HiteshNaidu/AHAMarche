@@ -45,7 +45,7 @@ const AccountDetails = props => {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    if (value.vehicleType !== "NA") {
+    if (value.vehicleType !== "") {
       if (selectedType !== null) {
         if (selectedType.length !== 0) {
           if (selectedLocation !== null) {
@@ -142,7 +142,7 @@ const AccountDetails = props => {
                   variant="outlined"
                 />
               </Grid>
-              {(value.vehicleType === "NA") ?
+              {(!value.vehicleType.length) ?
                 <>
                   <Grid
                     item
