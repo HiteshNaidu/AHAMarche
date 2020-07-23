@@ -9,10 +9,12 @@ import Menu from "@material-ui/core/Menu";
 import MoreIcon from "@material-ui/icons/Menu";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import FaceIcon from '@material-ui/icons/Face';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { useHistory } from "react-router-dom";
 import { Auth } from "aws-amplify";
-import { APIContext } from "../../App";
+import { APIContext, AuthContext } from "../../App";
+import { postUserById } from "../../utils/Api";
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -47,6 +49,7 @@ export default function PrimarySearchAppBar() {
   const classes = useStyles();
 
   const value = useContext(APIContext);
+  const currentUser = useContext(AuthContext);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
@@ -69,8 +72,14 @@ export default function PrimarySearchAppBar() {
     history.push("/DriverSignUp");
   }
 
-  async function handleDashboard() {
-    history.push("/dashboard");
+  async function handleSwitch() {
+    if (value.isDriverActive === true) {
+      await postUserById(currentUser.user.attributes.sub, { "isDriverActive": false });
+      window.location.reload();
+    } else {
+      await postUserById(currentUser.user.attributes.sub, { "isDriverActive": true });
+      window.location.reload();
+    }
   }
 
   async function handleHome() {
@@ -122,14 +131,28 @@ export default function PrimarySearchAppBar() {
 
           {(value.isDriver) ?
             <>
-              <MenuItem onClick={handleDashboard}>
-                <IconButton
-                  aria-label="driver view"
-                >
-                  <LocalShippingIcon style={{ color: "#424242" }}></LocalShippingIcon>
-                </IconButton>
-                <p>Dashboard</p>
-              </MenuItem>
+              {(value.isDriverActive) ?
+                <>
+                  <MenuItem onClick={handleSwitch}>
+                    <IconButton
+                      aria-label="driver view"
+                    >
+                      <FaceIcon style={{ color: "#424242" }}></FaceIcon>
+                    </IconButton>
+                    <p>Switch to User</p>
+                  </MenuItem>
+                </>
+                :
+                <>
+                  <MenuItem onClick={handleSwitch}>
+                    <IconButton
+                      aria-label="driver view"
+                    >
+                      <LocalShippingIcon style={{ color: "#424242" }}></LocalShippingIcon>
+                    </IconButton>
+                    <p>Switch to Driver</p>
+                  </MenuItem>
+                </>}
             </>
             :
             <>
@@ -192,13 +215,26 @@ export default function PrimarySearchAppBar() {
 
           {(value.isDriver ?
             <>
-              <IconButton
-                aria-label="driver view"
-                color="inherit"
-                onClick={handleDashboard}
-              >
-                <Typography>Dashboard</Typography>
-              </IconButton>
+              {(value.isDriverActive) ?
+                <>
+                  <IconButton
+                    aria-label="driver view"
+                    color="inherit"
+                    onClick={handleSwitch}
+                  >
+                    <Typography>Switch to User</Typography>
+                  </IconButton>
+                </>
+                :
+                <>
+                  <IconButton
+                    aria-label="driver view"
+                    color="inherit"
+                    onClick={handleSwitch}
+                  >
+                    <Typography>Switch to Driver</Typography>
+                  </IconButton>
+                </>}
             </>
             :
             <>

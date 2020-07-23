@@ -16,6 +16,7 @@ const App = () => {
   const [city, setCity] = useState("");
   const [cityItem, setCityItem] = useState({});
   const [isDriver, setIsDriver] = useState(false);
+  const [isDriverActive, setIsDriverActive] = useState(false);
   const [deliveriesCompleted, setDeliveriesCompleted] = useState(0);
   const [vehicleType, setVehicleType] = useState("");
   const [linkToS3, setLinkToS3] = useState("");
@@ -36,6 +37,8 @@ const App = () => {
     setLastname, 
     isDriver, 
     setIsDriver,
+    isDriverActive,
+    setIsDriverActive,
     deliveriesCompleted,
     setDeliveriesCompleted,
     vehicleType,

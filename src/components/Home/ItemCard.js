@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.paper,
         // border: '2px solid #000',
         // boxShadow: theme.shadows[5],
-        // padding: theme.spacing(2, 4, 3),
+        padding: theme.spacing(1, 1, 1, 1),
     },
 }));
 
@@ -92,11 +92,15 @@ export default function ItemCard(prop) {
                                 <Typography>
                                     {prop.card.description}
                                 </Typography>
+                                <br />
+                                <Typography variant="button" component="h2">
+                                    {"Age(years): " + prop.card.age}
+                                </Typography>
+                                <Typography variant="button" component="h2">
+                                    {"Price: " + prop.card.price}
+                                </Typography>
                             </CardContent>
                             <CardActions>
-                                <Button className={classes.cardButton} size="large" color="primary" disableFocusRipple disableRipple disableTouchRipple disabled>
-                                    {prop.card.price}
-                                </Button>
                                 <Button size="small" color="primary" variant="outlined">
                                     Contact Seller
                                 </Button>
@@ -123,14 +127,17 @@ export default function ItemCard(prop) {
                 <Typography gutterBottom variant="h5" component="h2">
                     {prop.card.title}
                 </Typography>
+                <Typography>
+                    {prop.card.description}
+                </Typography>
                 <ItemModal card={prop.card}></ItemModal>
             </CardContent>
             <CardActions>
-                <Button className={classes.cardButton} size="large" color="primary" disableFocusRipple disableRipple disableTouchRipple disabled>
-                    {prop.card.price}
-                </Button>
                 <Button size="small" color="primary" variant="contained" onClick={handleOpen}>
                     View
+                </Button>
+                <Button className={classes.cardButton} size="large" color="primary" disableFocusRipple disableRipple disableTouchRipple disabled>
+                    {"Price: " + prop.card.price}
                 </Button>
             </CardActions>
         </Card>

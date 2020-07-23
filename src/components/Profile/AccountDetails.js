@@ -105,7 +105,7 @@ const AccountDetails = props => {
           onSubmit={handleSubmit}
         >
           <CardHeader
-            subheader="You can change your city at any time"
+            subheader="You can change your details at any time"
             title="Profile"
           />
           <Divider />
