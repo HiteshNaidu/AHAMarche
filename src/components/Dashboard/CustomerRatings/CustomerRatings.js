@@ -3,8 +3,8 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import MoneyIcon from '@material-ui/icons/Money';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import PeopleIcon from '@material-ui/icons/PeopleOutlined';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 700
   },
   avatar: {
-    backgroundColor: theme.palette.error.main,
+    backgroundColor: theme.palette.success.main,
     height: 56,
     width: 56
   },
@@ -32,15 +32,15 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center'
   },
   differenceIcon: {
-    color: theme.palette.error.dark
+    color: theme.palette.success.dark
   },
   differenceValue: {
-    color: theme.palette.error.dark,
+    color: theme.palette.success.dark,
     marginRight: theme.spacing(1)
   }
 }));
 
-const Budget = props => {
+const TotalUsers = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -62,23 +62,23 @@ const Budget = props => {
               gutterBottom
               variant="body2"
             >
-              BUDGET
+              Customer Rating
             </Typography>
-            <Typography variant="h3">$24,000</Typography>
+            <Typography variant="h3">4.50</Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
-              <MoneyIcon className={classes.icon} />
+              <PeopleIcon className={classes.icon} />
             </Avatar>
           </Grid>
         </Grid>
         <div className={classes.difference}>
-          <ArrowDownwardIcon className={classes.differenceIcon} />
+          <ArrowUpwardIcon className={classes.differenceIcon} />
           <Typography
             className={classes.differenceValue}
             variant="body2"
           >
-            12%
+            15%
           </Typography>
           <Typography
             className={classes.caption}
@@ -92,8 +92,8 @@ const Budget = props => {
   );
 };
 
-Budget.propTypes = {
+TotalUsers.propTypes = {
   className: PropTypes.string
 };
 
-export default Budget;
+export default TotalUsers;

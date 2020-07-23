@@ -45,9 +45,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const statusColors = {
-  delivered: 'success',
-  pending: 'info',
-  refunded: 'danger'
+  Completed: 'success',
+  // Rejected: 'info',
+  Cancelled: 'danger'
 };
 
 const LatestOrders = props => {
@@ -63,16 +63,16 @@ const LatestOrders = props => {
       className={clsx(classes.root, className)}
     >
       <CardHeader
-        action={
-          <Button
-            color="primary"
-            size="small"
-            variant="outlined"
-          >
-            New entry
-          </Button>
-        }
-        title="Latest Orders"
+        // action={
+        //   <Button
+        //     color="primary"
+        //     size="small"
+        //     variant="outlined"
+        //   >
+        //     New entry
+        //   </Button>
+        // }
+        title="Delivery List"
       />
       <Divider />
       <CardContent className={classes.content}>
@@ -81,7 +81,7 @@ const LatestOrders = props => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Order Ref</TableCell>
+                  <TableCell>Delivery Ref</TableCell>
                   <TableCell>Customer</TableCell>
                   <TableCell sortDirection="desc">
                     <Tooltip

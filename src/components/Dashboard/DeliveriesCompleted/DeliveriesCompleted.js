@@ -7,10 +7,9 @@ import {
   CardContent,
   Grid,
   Typography,
-  Avatar,
-  LinearProgress
+  Avatar
 } from '@material-ui/core';
-import InsertChartIcon from '@material-ui/icons/InsertChartOutlined';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -60,21 +59,16 @@ const TasksProgress = props => {
               gutterBottom
               variant="body2"
             >
-              TASKS PROGRESS
+              Lifetime Deliveries
             </Typography>
-            <Typography variant="h3">75.5%</Typography>
+            <Typography variant="h3">75</Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
-              <InsertChartIcon className={classes.icon} />
+              <LocalShippingIcon className={classes.icon} />
             </Avatar>
           </Grid>
         </Grid>
-        <LinearProgress
-          className={classes.progress}
-          value={75.5}
-          variant="determinate"
-        />
       </CardContent>
     </Card>
   );

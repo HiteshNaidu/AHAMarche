@@ -7,14 +7,13 @@ import {
   Card,
   CardHeader,
   CardContent,
-  IconButton,
+  /*IconButton,*/
   Divider,
   Typography
 } from '@material-ui/core';
-import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-import PhoneIphoneIcon from '@material-ui/icons/PhoneIphone';
-import RefreshIcon from '@material-ui/icons/Refresh';
-import TabletMacIcon from '@material-ui/icons/TabletMac';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import LocalAtmIcon from '@material-ui/icons/LocalAtm';
+// import RefreshIcon from '@material-ui/icons/Refresh';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -47,10 +46,9 @@ const UsersByDevice = props => {
   const data = {
     datasets: [
       {
-        data: [63, 15, 22],
+        data: [90, 10],
         backgroundColor: [
           theme.palette.primary.main,
-          theme.palette.error.main,
           theme.palette.warning.main
         ],
         borderWidth: 8,
@@ -58,7 +56,7 @@ const UsersByDevice = props => {
         hoverBorderColor: theme.palette.white
       }
     ],
-    labels: ['Desktop', 'Tablet', 'Mobile']
+    labels: ['Delivery Pay', 'Tips']
   };
 
   const options = {
@@ -85,21 +83,15 @@ const UsersByDevice = props => {
 
   const devices = [
     {
-      title: 'Desktop',
-      value: '63',
-      icon: <LaptopMacIcon />,
+      title: 'Delivery Pay',
+      value: '90',
+      icon: <LocalShippingIcon />,
       color: theme.palette.primary.main
     },
     {
-      title: 'Tablet',
-      value: '15',
-      icon: <TabletMacIcon />,
-      color: theme.palette.error.main
-    },
-    {
-      title: 'Mobile',
-      value: '23',
-      icon: <PhoneIphoneIcon />,
+      title: 'Tips',
+      value: '10',
+      icon: <LocalAtmIcon />,
       color: theme.palette.warning.main
     }
   ];
@@ -110,12 +102,12 @@ const UsersByDevice = props => {
       className={clsx(classes.root, className)}
     >
       <CardHeader
-        action={
-          <IconButton size="small">
-            <RefreshIcon />
-          </IconButton>
-        }
-        title="Users By Device"
+        // action={
+        //   <IconButton size="small">
+        //     <RefreshIcon />
+        //   </IconButton>
+        // }
+        title="Total Earning Breakdown"
       />
       <Divider />
       <CardContent>

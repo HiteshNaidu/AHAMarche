@@ -2,13 +2,12 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
-import Budget from "./Budget/Budget";
-import TotalUsers from "./TotalUsers/TotalUsers";
-import TasksProgress from "./TasksProgress/TasksProgress";
-import TotalProfit from "./TotalProfit/TotalProfit";
-import LatestSales from "./LatestSales/LatestSales";
-import UsersByDevice from "./UsersByDevice/UsersByDevice";
-import LatestOrders from "./LatestOrders/LatestOrders";
+import Bonus from "./Bonus/Bonus";
+import CustomerRatings from "./CustomerRatings/CustomerRatings";
+import DeliveriesCompleted from "./DeliveriesCompleted/DeliveriesCompleted";
+import TotalEarnings from "./TotalEarnings/TotalEarnings";
+import EarningBreakdown from "./EarningBreakdown/EarningBreakdown";
+import CompletedDeliveriesList from "./CompletedDeliveriesList/CompletedDeliveriesList";
 import Navbar from "../NavBar/NavBar";
 
 const useStyles = makeStyles(theme => ({
@@ -35,7 +34,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <Budget />
+            <Bonus />
           </Grid>
           <Grid
             item
@@ -44,7 +43,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <TotalUsers />
+            <CustomerRatings />
           </Grid>
           <Grid
             item
@@ -53,7 +52,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <TasksProgress />
+            <DeliveriesCompleted />
           </Grid>
           <Grid
             item
@@ -62,16 +61,7 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <TotalProfit />
-          </Grid>
-          <Grid
-            item
-            lg={8}
-            md={12}
-            xl={9}
-            xs={12}
-          >
-            <LatestSales />
+            <TotalEarnings />
           </Grid>
           <Grid
             item
@@ -80,17 +70,8 @@ const Dashboard = () => {
             xl={3}
             xs={12}
           >
-            <UsersByDevice />
+            <EarningBreakdown />
           </Grid>
-          {/* <Grid
-            item
-            lg={4}
-            md={6}
-            xl={3}
-            xs={12}
-          >
-            <LatestProducts />
-          </Grid> */}
           <Grid
             item
             lg={8}
@@ -98,7 +79,7 @@ const Dashboard = () => {
             xl={9}
             xs={12}
           >
-            <LatestOrders />
+            <CompletedDeliveriesList />
           </Grid>
         </Grid>
       </div>
