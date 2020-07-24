@@ -82,7 +82,7 @@ export default function ItemCard(prop) {
                         <Card className={classes.card}>
                             <CardMedia
                                 className={classes.cardMedia}
-                                image="https://source.unsplash.com/random"
+                                image="../imgs/smartphone.png"
                                 title="Image title"
                             />
                             <CardContent className={classes.cardContent}>
@@ -120,7 +120,7 @@ export default function ItemCard(prop) {
         <Card className={classes.card}>
             <CardMedia
                 className={classes.cardMedia}
-                image="https://source.unsplash.com/random"
+                image="../imgs/smartphone.png"
                 title="Image title"
             />
             <CardContent className={classes.cardContent}>

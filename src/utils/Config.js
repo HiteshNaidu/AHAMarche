@@ -3,7 +3,7 @@ const dev = {
 		baseUrl: process.env.REACT_APP_API_URL,
 		endpoints: {
 			user: "user",
-			category: "category",
+			item: "item",
 		},
 	},
 	cognito: {

@@ -71,6 +71,7 @@ const Budget = props => {
             </Avatar>
           </Grid>
         </Grid>
+        <br />
         <LinearProgress
           className={classes.progress}
           value={50}

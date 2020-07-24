@@ -76,9 +76,20 @@ export const deleteCognitoUserById = async userId => {
 export const getItemsByCategory = async id => {
   try {
     return await api.get(
-      config.api.endpoints.category + "/" + id
+      config.api.endpoints.item + "/" + id
     );
   } catch (e) {
     console.log("Error calling getItemsByCategory API: ", e);
+  }
+};
+
+// POST to item by userid
+export const postItem = async (userId, body) => {
+  try {
+    return await api.post(
+      config.api.endpoints.item + "/user-" + userId, body
+    );
+  } catch (e) {
+    console.log("Error calling postItem API: ", e);
   }
 };
