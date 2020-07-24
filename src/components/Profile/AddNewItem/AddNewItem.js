@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
@@ -11,6 +11,8 @@ import AddPhotos from './AddPhotos';
 import AddDetails from './AddDetails';
 import Review from './Review';
 import NavBar from "../../NavBar/NavBar";
+import { AuthContext } from "../../../App";
+import { postItem } from "../../../utils/Api";
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -51,14 +53,14 @@ const useStyles = makeStyles((theme) => ({
 
 const steps = ['Add photos', 'Add details', 'Review your item'];
 
-function getStepContent(step) {
+function getStepContent(step, context) {
     switch (step) {
         case 0:
-            return <AddPhotos />;
+            return <AddPhotos capturedImage={context.capturedImage} />;
         case 1:
-            return <AddDetails />;
+            return <AddDetails setSelectedTitle={context.setSelectedTitle} setSelectedPrice={context.setSelectedPrice} setSelectedDescription={context.setSelectedDescription} setSelectedCategory={context.setSelectedCategory} setSelectedAge={context.setSelectedAge} setSelectedSize={context.setSelectedSize} />;
         case 2:
-            return <Review />;
+            return <Review image={context.image} selectedTitle={context.selectedTitle} selectedPrice={context.selectedPrice} selectedDescription={context.selectedDescription} selectedCategory={context.selectedCategory} selectedAge={context.selectedAge} selectedSize={context.selectedSize} />;
         default:
             throw new Error('Unknown step');
     }
@@ -67,8 +69,43 @@ function getStepContent(step) {
 export default function Checkout() {
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
+    const [selectedTitle, setSelectedTitle] = useState('');
+    const [selectedPrice, setSelectedPrice] = useState('');
+    const [selectedDescription, setSelectedDescription] = useState('');
+    const [image, capturedImage] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedAge, setSelectedAge] = useState('');
+    const [selectedSize, setSelectedSize] = useState('');
+
+    const currentUser = useContext(AuthContext);
+
+    const context = {
+        image,
+        capturedImage,
+        selectedCategory,
+        setSelectedCategory,
+        selectedAge,
+        setSelectedAge,
+        selectedSize,
+        setSelectedSize,
+        selectedTitle,
+        setSelectedTitle,
+        selectedPrice,
+        setSelectedPrice,
+        selectedDescription,
+        setSelectedDescription,
+    }
 
     const handleNext = () => {
+        if (activeStep === 1) {
+            // Error handling for details
+        }
+        if (activeStep === 2) {
+            postItem(currentUser.user.attributes.sub, {
+                "title": selectedTitle, "price": selectedPrice, "description": selectedDescription, "picturesLink": "Test",
+                "category": selectedCategory, "age": selectedAge, "size": selectedSize, "status": "Active"
+            });
+        }
         setActiveStep(activeStep + 1);
     };
 
@@ -105,7 +142,7 @@ export default function Checkout() {
                             </React.Fragment>
                         ) : (
                                 <React.Fragment>
-                                    {getStepContent(activeStep)}
+                                    {getStepContent(activeStep, context)}
                                     <div className={classes.buttons}>
                                         {activeStep !== 0 && (
                                             <Button onClick={handleBack} className={classes.button}>

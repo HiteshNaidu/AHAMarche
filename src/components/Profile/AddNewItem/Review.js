@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Review() {
+export default function Review(props) {
     const classes = useStyles();
 
     return (
@@ -25,27 +25,27 @@ export default function Review() {
             <List disablePadding>
                 <ListItem className={classes.listItem}>
                     <ListItemText>Title</ListItemText>
-                    <Typography variant="body2">Office chair</Typography>
+                    <Typography variant="body2">{props.selectedTitle}</Typography>
                 </ListItem>
                 <ListItem className={classes.listItem}>
                     <ListItemText>Price</ListItemText>
-                    <Typography variant="body2">$100</Typography>
+                    <Typography variant="body2">{props.selectedPrice}</Typography>
                 </ListItem>
                 <ListItem className={classes.listItem}>
                     <ListItemText>Description</ListItemText>
-                    <Typography variant="body2">Lorem ipsum dolor sit amet.</Typography>
+                    <Typography variant="body2">{props.selectedDescription}</Typography>
                 </ListItem>
                 <ListItem className={classes.listItem}>
                     <ListItemText>Category</ListItemText>
-                    <Typography variant="body2">Home</Typography>
+                    <Typography variant="body2">{props.selectedCategory}</Typography>
                 </ListItem>
                 <ListItem className={classes.listItem}>
                     <ListItemText>Age</ListItemText>
-                    <Typography variant="body2">1</Typography>
+                    <Typography variant="body2">{props.selectedAge}</Typography>
                 </ListItem>
                 <ListItem className={classes.listItem}>
                     <ListItemText>Size</ListItemText>
-                    <Typography variant="body2">Medium</Typography>
+                    <Typography variant="body2">{props.selectedSize}</Typography>
                 </ListItem>
             </List>
         </React.Fragment>

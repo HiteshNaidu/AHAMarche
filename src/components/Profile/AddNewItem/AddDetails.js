@@ -6,7 +6,19 @@ import CategoryFilter from '../../Home/CategoryFilter';
 import ItemAge from './ItemAge';
 import ItemSize from './ItemSize';
 
-export default function AddDetails() {
+export default function AddDetails(props) {
+    const handleChange = (event) => {
+        if (event.target.id === 'title') {
+            props.setSelectedTitle(event.target.value);
+        }
+        if (event.target.id === 'price') {
+            props.setSelectedPrice(event.target.value);
+        }
+        if (event.target.id === 'description') {
+            props.setSelectedDescription(event.target.value);
+        }
+    }
+
     return (
         <React.Fragment>
             <Typography variant="h6" gutterBottom>
@@ -20,7 +32,9 @@ export default function AddDetails() {
                         name="title"
                         label="Title"
                         fullWidth
+                        autoFocus
                         autoComplete="title"
+                        onChange={handleChange}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -31,6 +45,7 @@ export default function AddDetails() {
                         label="Price"
                         fullWidth
                         autoComplete="price"
+                        onChange={handleChange}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -41,16 +56,17 @@ export default function AddDetails() {
                         label="Description"
                         fullWidth
                         autoComplete="description"
+                        onChange={handleChange}
                     />
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                    <CategoryFilter></CategoryFilter>
+                    <CategoryFilter setSelectedCategory={props.setSelectedCategory}></CategoryFilter>
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                    <ItemAge></ItemAge>
+                    <ItemAge setSelectedAge={props.setSelectedAge}></ItemAge>
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                    <ItemSize></ItemSize>
+                    <ItemSize setSelectedSize={props.setSelectedSize}></ItemSize>
                 </Grid>
             </Grid>
         </React.Fragment>

@@ -19,11 +19,11 @@ export default function ItemSize(props) {
     const size = ['Small', 'Medium', 'Large', 'Extra Large'];
 
     const handleChange = (event, values) => {
-        props.setSelectedCategory(values);
+        props.setSelectedSize(values);
         if (values) {
-            props.setSelectedCategory(values);
+            props.setSelectedSize(values);
         } else {
-            props.setSelectedCategory('Home');
+            props.setSelectedSize(size[0]);
         }
     };
 
@@ -40,8 +40,6 @@ export default function ItemSize(props) {
                 renderInput={params => (
                     <>
                         <TextField
-                            error={props.err}
-                            helperText={props.errMessage}
                             required
                             {...params}
                             variant="outlined"

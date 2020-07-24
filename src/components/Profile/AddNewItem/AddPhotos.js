@@ -25,7 +25,7 @@ export default function AddPhotos(props) {
                 {isCameraOpen && (
                     <>
                         <Camera
-                            onCapture={blob => setCardImage(blob)}
+                            onCapture={blob => {setCardImage(blob); props.capturedImage(blob)}}
                             onClear={() => setCardImage(undefined)}
                         />
                         <br />

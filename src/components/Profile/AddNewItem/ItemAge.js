@@ -19,11 +19,11 @@ export default function ItemAge(props) {
     const age = ['New', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'More than 10'];
 
     const handleChange = (event, values) => {
-        props.setSelectedCategory(values);
+        props.setSelectedAge(values);
         if (values) {
-            props.setSelectedCategory(values);
+            props.setSelectedAge(values);
         } else {
-            props.setSelectedCategory('Home');
+            props.setSelectedAge(age[0]);
         }
     };
 
@@ -40,8 +40,6 @@ export default function ItemAge(props) {
                 renderInput={params => (
                     <>
                         <TextField
-                            error={props.err}
-                            helperText={props.errMessage}
                             required
                             {...params}
                             variant="outlined"
