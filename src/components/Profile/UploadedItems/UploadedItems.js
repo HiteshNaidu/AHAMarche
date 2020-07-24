@@ -17,6 +17,7 @@ import {
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { useHistory } from "react-router-dom";
 
 import mockData from './data';
 
@@ -40,8 +41,13 @@ const LatestProducts = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
+  let history = useHistory();
 
   const [products] = useState(mockData);
+
+  const handleClick = () => {
+    history.push("/addnewitem");
+  }
 
   return (
     <Card
@@ -50,7 +56,7 @@ const LatestProducts = props => {
     >
       <CardHeader
         subtitle={`${products.length} in total`}
-        title="Latest products"
+        title="Uploaded Items"
       />
       <Divider />
       <CardContent className={classes.content}>
@@ -69,7 +75,7 @@ const LatestProducts = props => {
               </ListItemAvatar>
               <ListItemText
                 primary={product.name}
-                secondary={`Updated ${product.updatedAt.fromNow()}`}
+                secondary={`Uploaded ${product.uploadedAt.fromNow()}`}
               />
               <IconButton
                 edge="end"
@@ -83,6 +89,14 @@ const LatestProducts = props => {
       </CardContent>
       <Divider />
       <CardActions className={classes.actions}>
+        <Button
+          color="primary"
+          size="small"
+          variant="contained"
+          onClick={handleClick}
+        >
+          Add New Item
+        </Button>
         <Button
           color="primary"
           size="small"

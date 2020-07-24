@@ -4,32 +4,32 @@ import moment from 'moment';
 export default [
   {
     id: uuid(),
-    name: 'Dropbox',
-    imageUrl: '/images/products/product_1.png',
-    updatedAt: moment().subtract(2, 'hours')
+    name: 'Wooden Chair',
+    imageUrl: 'https://source.unsplash.com/random',
+    uploadedAt: moment().subtract(2, 'days')
   },
   {
     id: uuid(),
-    name: 'Medium Corporation',
-    imageUrl: '/images/products/product_2.png',
-    updatedAt: moment().subtract(2, 'hours')
+    name: 'Apple Watch 5',
+    imageUrl: 'https://source.unsplash.com/random',
+    uploadedAt: moment().subtract(2, 'days')
   },
   {
     id: uuid(),
-    name: 'Slack',
-    imageUrl: '/images/products/product_3.png',
-    updatedAt: moment().subtract(3, 'hours')
+    name: 'Sony Speakers',
+    imageUrl: 'https://source.unsplash.com/random',
+    uploadedAt: moment().subtract(3, 'days')
   },
   {
     id: uuid(),
-    name: 'Lyft',
-    imageUrl: '/images/products/product_4.png',
-    updatedAt: moment().subtract(5, 'hours')
+    name: 'Apple iPhone 11',
+    imageUrl: 'https://source.unsplash.com/random',
+    uploadedAt: moment().subtract(5, 'days')
   },
   {
     id: uuid(),
-    name: 'GitHub',
-    imageUrl: '/images/products/product_5.png',
-    updatedAt: moment().subtract(9, 'hours')
+    name: 'Couch',
+    imageUrl: 'https://source.unsplash.com/random',
+    uploadedAt: moment().subtract(9, 'days')
   }
 ];
