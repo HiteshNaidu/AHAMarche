@@ -75,8 +75,8 @@ export default function Settings() {
   async function handleDeleteUser() {
     if (radioChecked === 'delete') {
       try {
-        await deleteUserById(currentUser.user.attributes.sub);
-        await deleteCognitoUserById(currentUser.user.attributes.sub);
+        await deleteUserById(currentUser.user.attributes.sub, currentUser.user.signInUserSession.idToken.jwtToken);
+        await deleteCognitoUserById(currentUser.user.attributes.sub, currentUser.user.signInUserSession.idToken.jwtToken);
         await Auth.signOut();
         setDeletionToast(true);
       } catch (e) {

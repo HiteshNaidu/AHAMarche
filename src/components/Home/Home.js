@@ -44,7 +44,7 @@ export default function Home() {
         const user = await getCurrentUser();
         currentUser.setUser(user);
 
-        let data = await getUserById(user.attributes.sub);
+        let data = await getUserById(user.attributes.sub, user.signInUserSession.idToken.jwtToken);
         if (data) {
           value.setUsername(data.data.phone);
           value.setCity(data.data.city);
@@ -57,7 +57,7 @@ export default function Home() {
           value.setVehicleType(data.data.vehicleType);
           value.setLinkToS3(data.data.linkToS3);
         }
-        let items = await getItemsByCategory(value.selectedCategory);
+        let items = await getItemsByCategory(value.selectedCategory, user.signInUserSession.idToken.jwtToken);
         value.setItemList(items.data);
         setIsLoaded(true);
       } catch (e) {

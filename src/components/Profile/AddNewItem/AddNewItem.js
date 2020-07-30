@@ -104,7 +104,7 @@ export default function Checkout() {
             postItem(currentUser.user.attributes.sub, {
                 "title": selectedTitle, "price": selectedPrice, "description": selectedDescription, "picturesLink": "Test",
                 "category": selectedCategory, "age": selectedAge, "size": selectedSize, "status": "Active"
-            });
+            }, currentUser.user.signInUserSession.idToken.jwtToken);
         }
         setActiveStep(activeStep + 1);
     };

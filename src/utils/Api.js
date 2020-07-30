@@ -29,10 +29,11 @@ export const getCurrentUser = async () => {
 };
 
 // GET user by userid
-export const getUserById = async userId => {
+export const getUserById = async (userId, token) => {
   try {
     return await api.get(
-      config.api.endpoints.user + "/user-" + userId
+      config.api.endpoints.user + "/user-" + userId,
+      { headers: { 'Authorization': token } }
     );
   } catch (e) {
     console.log("Error calling getUserById API: ", e);
@@ -51,10 +52,11 @@ export const postUserById = async (userId, body) => {
 };
 
 // DELETE user by userid
-export const deleteUserById = async userId => {
+export const deleteUserById = async (userId, token) => {
   try {
     return await api.delete(
-      config.api.endpoints.user + "/user-" + userId
+      config.api.endpoints.user + "/user-" + userId,
+      { headers: { 'Authorization': token } }
     );
   } catch (e) {
     console.log("Error calling deleteUserById API: ", e);
@@ -62,10 +64,11 @@ export const deleteUserById = async userId => {
 };
 
 // DELETE Cognitouser by userid
-export const deleteCognitoUserById = async userId => {
+export const deleteCognitoUserById = async (userId, token) => {
   try {
     return await api.post(
-      config.api.endpoints.user + "/" + userId
+      config.api.endpoints.user + "/" + userId,
+      // { headers: { 'Authorization': token } }
     );
   } catch (e) {
     console.log("Error calling deleteCognitoUserById API: ", e);
@@ -73,10 +76,11 @@ export const deleteCognitoUserById = async userId => {
 };
 
 // GET list of items by category
-export const getItemsByCategory = async id => {
+export const getItemsByCategory = async (id, token) => {
   try {
     return await api.get(
-      config.api.endpoints.item + "/" + id
+      config.api.endpoints.item + "/" + id,
+      { headers: { 'Authorization': token } }
     );
   } catch (e) {
     console.log("Error calling getItemsByCategory API: ", e);
@@ -84,10 +88,11 @@ export const getItemsByCategory = async id => {
 };
 
 // POST to item by userid
-export const postItem = async (userId, body) => {
+export const postItem = async (userId, body, token) => {
   try {
     return await api.post(
-      config.api.endpoints.item + "/user-" + userId, body
+      config.api.endpoints.item + "/user-" + userId, body,
+      { headers: { 'Authorization': token } }
     );
   } catch (e) {
     console.log("Error calling postItem API: ", e);
