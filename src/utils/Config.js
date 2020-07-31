@@ -4,6 +4,7 @@ const dev = {
 		endpoints: {
 			user: "user",
 			item: "item",
+			sns: "sns",
 		},
 	},
 	cognito: {

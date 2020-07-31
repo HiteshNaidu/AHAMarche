@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -7,6 +7,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
+import { APIContext, AuthContext } from "../../App";
+import { getUserById, textToSeller } from "../../utils/Api";
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -40,6 +42,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ItemCard(prop) {
     const classes = useStyles();
+    const currentUser = useContext(AuthContext);
+    const value = useContext(APIContext);
 
     const [open, setOpen] = useState(false);
 
@@ -65,6 +69,13 @@ export default function ItemCard(prop) {
     const handleClose = () => {
         setOpen(false);
     };
+
+    async function handleSeller() {
+        const userId = prop.card.user.split("-")[1] + "-" + prop.card.user.split("-")[2] + "-" + prop.card.user.split("-")[3] + "-" + prop.card.user.split("-")[4] + "-" + prop.card.user.split("-")[5];
+        let data = await getUserById(userId, currentUser.user.signInUserSession.idToken.jwtToken);
+        // console.log((data.data.firstname + " " + data.data.lastname), data.data.phone, (value.firstname + " " + value.lastname), value.username, prop.card.title);
+        await textToSeller(data.data.phone, { "userName": (value.firstname + " " + value.lastname), "phone": value.username, "item": prop.card.title, "sellerName": (data.data.firstname + " " + data.data.lastname) });
+    }
 
     function ItemModal(prop) {
         // getModalStyle is not a pure function, we roll the style only on the first render
@@ -101,7 +112,8 @@ export default function ItemCard(prop) {
                                 </Typography>
                             </CardContent>
                             <CardActions>
-                                <Button size="small" color="primary" variant="outlined">
+                                {/* <Button size="small" color="primary" variant="outlined" onClick={handleSeller(prop.card.user.split("-")[1] + "-" + prop.card.user.split("-")[2] + "-" + prop.card.user.split("-")[3] + "-" + prop.card.user.split("-")[4] + "-" + prop.card.user.split("-")[5])}> */}
+                                <Button size="small" color="primary" variant="outlined" onClick={handleSeller}>
                                     Contact Seller
                                 </Button>
                                 <Button size="small" color="primary" variant="contained">

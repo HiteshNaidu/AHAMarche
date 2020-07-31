@@ -98,3 +98,15 @@ export const postItem = async (userId, body, token) => {
     console.log("Error calling postItem API: ", e);
   }
 };
+
+// POST to publish text to seller
+export const textToSeller = async (sellerPhone, body) => {
+  try {
+    return await api.post(
+      config.api.endpoints.sns + "/" + sellerPhone, body,
+      // { headers: { 'Authorization': token } }
+    );
+  } catch (e) {
+    console.log("Error calling textToSeller API: ", e);
+  }
+};
