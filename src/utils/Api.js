@@ -111,6 +111,17 @@ export const postItem = async (userId, body, token) => {
   }
 };
 
+// PUT to item by itemid
+export const updateItemById = async (itemId, body) => {
+  try {
+    return await api.put(
+      config.api.endpoints.item + "/" + itemId, body
+    );
+  } catch (e) {
+    console.log("Error calling updateItemById API: ", e);
+  }
+};
+
 // POST to publish text to seller
 export const textToSeller = async (sellerPhone, body) => {
   try {

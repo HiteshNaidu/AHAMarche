@@ -58,7 +58,15 @@ export default function Home() {
           value.setLinkToS3(data.data.linkToS3);
         }
         let items = await getItemsByCategory(value.selectedCategory, user.signInUserSession.idToken.jwtToken);
-        value.setItemList(items.data);
+        if (items.data) {
+          var arr = [];
+          for (let i = 0; i < items.data.length; i++) {
+            if (items.data[i].itemSold === false) {
+              arr.push(items.data[i]);
+            }
+          }
+          value.setItemList(arr);
+        }
         setIsLoaded(true);
       } catch (e) {
         console.log("Error getting current user: ", e);
@@ -72,7 +80,13 @@ export default function Home() {
   async function handleCategoryChange() {
     let items = await getItemsByCategory(value.selectedCategory, currentUser.user.signInUserSession.idToken.jwtToken);
     if (items.data) {
-      value.setItemList(items.data);
+      var arr = [];
+      for (let i = 0; i < items.data.length; i++) {
+        if (items.data[i].itemSold === false) {
+          arr.push(items.data[i]);
+        }
+      }
+      value.setItemList(arr);
     }
     // value.setItemList(items.data);
   }

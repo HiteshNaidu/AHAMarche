@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { APIContext, AuthContext } from "../../App";
-import { getUserById, textToSeller, getAllUsers, textToDriver } from "../../utils/Api";
+import { getUserById, textToSeller, getAllUsers, textToDriver, updateItemById } from "../../utils/Api";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import Box from '@material-ui/core/Box';
@@ -55,6 +55,7 @@ export default function ItemCard(prop) {
 
     const [open, setOpen] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
+    const [openFailAlert, setOpenFailAlert] = useState(false);
     const [message, setMessage] = useState(false);
 
     var driverArr = [];
@@ -87,51 +88,98 @@ export default function ItemCard(prop) {
             return;
         }
         setOpenAlert(false);
+        setOpenFailAlert(false);
     };
 
     async function handleSeller() {
-        const userId = prop.card.user.split("-")[1] + "-" + prop.card.user.split("-")[2] + "-" + prop.card.user.split("-")[3] + "-" + prop.card.user.split("-")[4] + "-" + prop.card.user.split("-")[5];
-        let data = await getUserById(userId, currentUser.user.signInUserSession.idToken.jwtToken);
-        await textToSeller(data.data.phone, { "userName": (value.firstname + " " + value.lastname), "phone": value.username, "item": prop.card.title, "sellerName": (data.data.firstname + " " + data.data.lastname) });
-        setMessage("A text message has been sent to the seller. You will be contacted by them for further dicussion.");
-        setOpenAlert(true);
+        try {
+            if (prop.card.itemSold === false) {
+                const userId = prop.card.user.split("-")[1] + "-" + prop.card.user.split("-")[2] + "-" + prop.card.user.split("-")[3] + "-" + prop.card.user.split("-")[4] + "-" + prop.card.user.split("-")[5];
+                let data = await getUserById(userId, currentUser.user.signInUserSession.idToken.jwtToken);
+                await updateItemById(prop.card.id, { "itemSold": true, "category": prop.card.sort });
+                prop.card.itemSold = true;
+                await textToSeller(data.data.phone, { "userName": (value.firstname + " " + value.lastname), "phone": value.username, "item": prop.card.title, "sellerName": (data.data.firstname + " " + data.data.lastname) });
+                setMessage("A text message has been sent to the seller. You will be contacted by them for further dicussion.");
+                setOpenAlert(true);
+            } else {
+                setMessage("An error occured: Item is sold.");
+                setOpenFailAlert(true);
+            }
+        } catch (e) {
+            setMessage("An error occured: Failed to send a text message to the seller. Please try again after sometime.");
+            setOpenFailAlert(true);
+        }
     }
 
     async function handleDelivery() {
-        if (prop.card.itemSold === false) {
-            const userId = prop.card.user.split("-")[1] + "-" + prop.card.user.split("-")[2] + "-" + prop.card.user.split("-")[3] + "-" + prop.card.user.split("-")[4] + "-" + prop.card.user.split("-")[5];
-            let seller = await getUserById(userId, currentUser.user.signInUserSession.idToken.jwtToken);
-            let drivers = await getAllUsers();
-            for (let i = 0; i < drivers.data.length; i++) {
-                if (seller.data.city === drivers.data[i].city && drivers.data[i].isDriver === true && drivers.data[i].isDriverActive === true) {
-                    if (prop.card.size === "Small") {
-                        if (drivers.data[i].vehicleType === "Hatchback" || drivers.data[i].vehicleType === "Sedan" || drivers.data[i].vehicleType === "SUV" || drivers.data[i].vehicleType === "Truck") {
-                            driverArr.push(drivers.data);
+        try {
+            if (prop.card.itemSold === false) {
+                var price = "0";
+                const userId = prop.card.user.split("-")[1] + "-" + prop.card.user.split("-")[2] + "-" + prop.card.user.split("-")[3] + "-" + prop.card.user.split("-")[4] + "-" + prop.card.user.split("-")[5];
+                let seller = await getUserById(userId, currentUser.user.signInUserSession.idToken.jwtToken);
+                let drivers = await getAllUsers();
+                switch (prop.card.size) {
+                    case 'Small':
+                        price = "3.99";
+                        for (let i = 0; i < drivers.data.length; i++) {
+                            if (seller.data.city === drivers.data[i].city && drivers.data[i].isDriver === true && drivers.data[i].isDriverActive === true) {
+                                if (drivers.data[i].vehicleType === "Hatchback" || drivers.data[i].vehicleType === "Sedan" || drivers.data[i].vehicleType === "SUV" || drivers.data[i].vehicleType === "Truck") {
+                                    driverArr.push(drivers.data[i]);
+                                }
+                            }
                         }
-                    }
-                    if (prop.card.size === "Medium") {
-                        if (drivers.data[i].vehicleType === "Hatchback" || drivers.data[i].vehicleType === "Sedan" || drivers.data[i].vehicleType === "SUV" || drivers.data[i].vehicleType === "Truck") {
-                            driverArr.push(drivers.data);
+                        break;
+                    case 'Medium':
+                        price = "5.99";
+                        for (let i = 0; i < drivers.data.length; i++) {
+                            if (seller.data.city === drivers.data[i].city && drivers.data[i].isDriver === true && drivers.data[i].isDriverActive === true) {
+                                if (drivers.data[i].vehicleType === "Hatchback" || drivers.data[i].vehicleType === "Sedan" || drivers.data[i].vehicleType === "SUV" || drivers.data[i].vehicleType === "Truck") {
+                                    driverArr.push(drivers.data[i]);
+                                }
+                            }
                         }
-                    }
-                    if (prop.card.size === "Large") {
-                        if (drivers.data[i].vehicleType === "SUV" || drivers.data[i].vehicleType === "Truck") {
-                            driverArr.push(drivers.data);
+                        break;
+                    case 'Large':
+                        price = "7.99";
+                        for (let i = 0; i < drivers.data.length; i++) {
+                            if (seller.data.city === drivers.data[i].city && drivers.data[i].isDriver === true && drivers.data[i].isDriverActive === true) {
+                                if (drivers.data[i].vehicleType === "SUV" || drivers.data[i].vehicleType === "Truck") {
+                                    driverArr.push(drivers.data[i]);
+                                }
+                            }
                         }
-                    }
-                    if (prop.card.size === "Extra Large") {
-                        if (drivers.data[i].vehicleType === "Truck") {
-                            driverArr.push(drivers.data);
+                        break;
+                    case 'Extra Large':
+                        price = "9.99";
+                        for (let i = 0; i < drivers.data.length; i++) {
+                            if (seller.data.city === drivers.data[i].city && drivers.data[i].isDriver === true && drivers.data[i].isDriverActive === true) {
+                                if (drivers.data[i].vehicleType === "Truck") {
+                                    driverArr.push(drivers.data[i]);
+                                }
+                            }
                         }
-                    }
+                        break;
+                    default:
+                        console.log("Error: Item size unknown!");
                 }
+
+                const random = Math.floor(Math.random() * driverArr.length);
+                await updateItemById(prop.card.id, { "itemSold": true, "category": prop.card.sort });
+                prop.card.itemSold = true;
+                // text to driver here
+                await textToDriver(driverArr[random].phone, {
+                    "city": seller.data.city, "item": prop.card.title, "sellerName": (seller.data.firstname + " " + seller.data.lastname),
+                    "sellerPhone": (seller.data.phone), "buyerPhone": value.username, "buyerName": (value.firstname + " " + value.lastname), "price": price
+                });
+                setMessage("A text message has been sent to the driver. You will be contacted by them for further dicussion.");
+                setOpenAlert(true);
+            } else {
+                setMessage("An error occured: Item is sold.");
+                setOpenFailAlert(true);
             }
-
-            const random = Math.floor(Math.random() * driverArr.length);
-            console.log(driverArr, random);
-
-            // text to driver here
-            await textToDriver(driverArr[random].phone, { "city": seller.data.city, "item": prop.card.title, "sellerName": (seller.data.firstname + " " + seller.data.lastname), "sellerPhone": (seller.data.phone), "buyerPhone": value.phone, "buyerName": (value.firstname + " " + value.lastname) });
+        } catch (e) {
+            setMessage("An error occured: Failed to assign and send text message to the driver. Please try again after sometime.");
+            setOpenFailAlert(true);
         }
     };
 
@@ -172,7 +220,7 @@ export default function ItemCard(prop) {
                             <CardActions>
                                 {/* <Button size="small" color="primary" variant="outlined" onClick={handleSeller(prop.card.user.split("-")[1] + "-" + prop.card.user.split("-")[2] + "-" + prop.card.user.split("-")[3] + "-" + prop.card.user.split("-")[4] + "-" + prop.card.user.split("-")[5])}> */}
                                 <Button size="small" color="primary" variant="outlined" onClick={handleSeller}>
-                                    Contact Seller
+                                    Pick-Up Item
                                 </Button>
                                 <Button size="small" color="primary" variant="contained" onClick={handleDelivery}>
                                     Get Item Delivered
@@ -181,6 +229,11 @@ export default function ItemCard(prop) {
                         </Card>
                         <Snackbar open={openAlert} autoHideDuration={5000} onClose={handleCloseAlert}>
                             <Alert style={{ backgroundColor: "#66bb6a", textAlign: "left" }} onClose={handleCloseAlert}>
+                                {message}
+                            </Alert>
+                        </Snackbar>
+                        <Snackbar open={openFailAlert} autoHideDuration={5000} onClose={handleCloseAlert}>
+                            <Alert style={{ textAlign: "left" }} severity="error" onClose={handleCloseAlert}>
                                 {message}
                             </Alert>
                         </Snackbar>
