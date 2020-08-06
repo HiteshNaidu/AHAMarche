@@ -12,11 +12,9 @@ import {
   List,
   ListItem,
   ListItemAvatar,
-  ListItemText,
-  IconButton
+  ListItemText
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { useHistory } from "react-router-dom";
 
 import mockData from './data';
@@ -77,12 +75,6 @@ const LatestProducts = props => {
                 primary={product.name}
                 secondary={`Uploaded ${product.uploadedAt.fromNow()}`}
               />
-              <IconButton
-                edge="end"
-                size="small"
-              >
-                <MoreVertIcon />
-              </IconButton>
             </ListItem>
           ))}
         </List>

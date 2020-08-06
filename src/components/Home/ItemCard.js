@@ -11,6 +11,7 @@ import { APIContext, AuthContext } from "../../App";
 import { getUserById, textToSeller, getAllUsers, textToDriver } from "../../utils/Api";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import Box from '@material-ui/core/Box';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     },
     cardMedia: {
         paddingTop: '56.25%', // 16:9
+        margin: theme.spacing(10, 10, 10, 10)
     },
     cardContent: {
         flexGrow: 1,
@@ -125,7 +127,6 @@ export default function ItemCard(prop) {
                 }
             }
 
-            
             const random = Math.floor(Math.random() * driverArr.length);
             console.log(driverArr, random);
 
@@ -150,7 +151,7 @@ export default function ItemCard(prop) {
                         <Card className={classes.card}>
                             <CardMedia
                                 className={classes.cardMedia}
-                                image="../imgs/smartphone.png"
+                                image={prop.card.picturesLink}
                                 title="Image title"
                             />
                             <CardContent className={classes.cardContent}>
@@ -178,6 +179,11 @@ export default function ItemCard(prop) {
                                 </Button>
                             </CardActions>
                         </Card>
+                        <Snackbar open={openAlert} autoHideDuration={5000} onClose={handleCloseAlert}>
+                            <Alert style={{ backgroundColor: "#66bb6a", textAlign: "left" }} onClose={handleCloseAlert}>
+                                {message}
+                            </Alert>
+                        </Snackbar>
                     </div>
                 </Modal>
                 :
@@ -186,36 +192,61 @@ export default function ItemCard(prop) {
     }
 
     return (
-        <>
-            <Card className={classes.card}>
-                <CardMedia
-                    className={classes.cardMedia}
-                    image="../imgs/smartphone.png"
-                    title="Image title"
-                />
-                <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                        {prop.card.title}
-                    </Typography>
-                    <Typography>
-                        {prop.card.description}
-                    </Typography>
-                    <ItemModal card={prop.card}></ItemModal>
-                </CardContent>
-                <CardActions>
-                    <Button size="small" color="primary" variant="contained" onClick={handleOpen}>
-                        View
+        (prop.card.price === "free") ?
+            <>
+                <Box border={5} borderColor="green">
+                    <Card className={classes.card}>
+                        <CardMedia
+                            className={classes.cardMedia}
+                            image={prop.card.picturesLink}
+                            title="Image title"
+                        />
+                        <CardContent className={classes.cardContent}>
+                            <Typography gutterBottom variant="h5" component="h2">
+                                {prop.card.title}
+                            </Typography>
+                            <Typography>
+                                {prop.card.description}
+                            </Typography>
+                            <ItemModal card={prop.card}></ItemModal>
+                        </CardContent>
+                        <CardActions>
+                            <Button size="small" color="primary" variant="contained" onClick={handleOpen}>
+                                View
+                            </Button>
+                            <Button className={classes.cardButton} size="large" color="primary" disableFocusRipple disableRipple disableTouchRipple disabled>
+                                {"Price: " + prop.card.price}
+                            </Button>
+                        </CardActions>
+                    </Card>
+                </Box>
+            </>
+            :
+            <>
+                <Card className={classes.card}>
+                    <CardMedia
+                        className={classes.cardMedia}
+                        image={prop.card.picturesLink}
+                        title="Image title"
+                    />
+                    <CardContent className={classes.cardContent}>
+                        <Typography gutterBottom variant="h5" component="h2">
+                            {prop.card.title}
+                        </Typography>
+                        <Typography>
+                            {prop.card.description}
+                        </Typography>
+                        <ItemModal card={prop.card}></ItemModal>
+                    </CardContent>
+                    <CardActions>
+                        <Button size="small" color="primary" variant="contained" onClick={handleOpen}>
+                            View
                     </Button>
-                    <Button className={classes.cardButton} size="large" color="primary" disableFocusRipple disableRipple disableTouchRipple disabled>
-                        {"Price: " + prop.card.price}
-                    </Button>
-                </CardActions>
-            </Card>
-            <Snackbar open={openAlert} autoHideDuration={5000} onClose={handleCloseAlert}>
-                <Alert style={{ backgroundColor: "#66bb6a", textAlign: "left" }} onClose={handleCloseAlert}>
-                    {message}
-                </Alert>
-            </Snackbar>
-        </>
+                        <Button className={classes.cardButton} size="large" color="primary" disableFocusRipple disableRipple disableTouchRipple disabled>
+                            {"Price: " + prop.card.price}
+                        </Button>
+                    </CardActions>
+                </Card>
+            </>
     );
 }

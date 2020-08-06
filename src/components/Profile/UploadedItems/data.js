@@ -5,31 +5,31 @@ export default [
   {
     id: uuid(),
     name: 'Wooden Chair',
-    imageUrl: '../imgs/smartphone.png',
+    imageUrl: '../imgs/woodenChair.png',
     uploadedAt: moment().subtract(2, 'days')
   },
   {
     id: uuid(),
     name: 'Apple Watch 5',
-    imageUrl: '../imgs/smartphone.png',
+    imageUrl: '../imgs/appleWatch.png',
     uploadedAt: moment().subtract(2, 'days')
   },
   {
     id: uuid(),
     name: 'Sony Speakers',
-    imageUrl: '../imgs/smartphone.png',
+    imageUrl: '../imgs/speakers.png',
     uploadedAt: moment().subtract(3, 'days')
   },
   {
     id: uuid(),
     name: 'Apple iPhone 11',
-    imageUrl: '../imgs/smartphone.png',
+    imageUrl: '../imgs/iphone.png',
     uploadedAt: moment().subtract(5, 'days')
   },
   {
     id: uuid(),
     name: 'Couch',
-    imageUrl: '../imgs/smartphone.png',
+    imageUrl: '../imgs/couch.png',
     uploadedAt: moment().subtract(9, 'days')
   }
 ];

@@ -71,7 +71,10 @@ export default function Home() {
 
   async function handleCategoryChange() {
     let items = await getItemsByCategory(value.selectedCategory, currentUser.user.signInUserSession.idToken.jwtToken);
-    value.setItemList(items.data);
+    if (items.data) {
+      value.setItemList(items.data);
+    }
+    // value.setItemList(items.data);
   }
 
   return (
