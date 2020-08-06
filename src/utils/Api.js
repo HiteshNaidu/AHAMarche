@@ -40,6 +40,18 @@ export const getUserById = async (userId, token) => {
   }
 };
 
+// GET all user
+export const getAllUsers = async (token) => {
+  try {
+    return await api.get(
+      config.api.endpoints.user,
+      // { headers: { 'Authorization': token } }
+    );
+  } catch (e) {
+    console.log("Error calling getAllUsers API: ", e);
+  }
+};
+
 // POST to user by userid
 export const postUserById = async (userId, body) => {
   try {
@@ -103,10 +115,22 @@ export const postItem = async (userId, body, token) => {
 export const textToSeller = async (sellerPhone, body) => {
   try {
     return await api.post(
-      config.api.endpoints.sns + "/" + sellerPhone, body,
+      config.api.endpoints.sns + "/seller/" + sellerPhone, body,
       // { headers: { 'Authorization': token } }
     );
   } catch (e) {
     console.log("Error calling textToSeller API: ", e);
+  }
+};
+
+// POST to publish text to driver
+export const textToDriver = async (driverPhone, body) => {
+  try {
+    return await api.post(
+      config.api.endpoints.sns + "/driver/" + driverPhone, body,
+      // { headers: { 'Authorization': token } }
+    );
+  } catch (e) {
+    console.log("Error calling textToDriver API: ", e);
   }
 };
