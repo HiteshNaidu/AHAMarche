@@ -188,7 +188,7 @@ export default function SubmitCode(data) {
   React.useEffect(() => {
     async function signInUsingHyperlink(userId, otp) {
       // rehydrate the CognitoUser
-      let data = await getUserById("user-" + userId);
+      let data = await getUserById(userId);
       const user = {
         username: data.data.cognitoUser.username,
         session: data.data.cognitoUser.session

@@ -7,7 +7,7 @@ export default function PrivacyDetails() {
   let history = useHistory();
 
   const handleClick = () => {
-    history.push("/customersignup");
+    history.push("/signup");
   }
 
   return (
