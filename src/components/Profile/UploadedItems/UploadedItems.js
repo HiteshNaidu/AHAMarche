@@ -14,7 +14,6 @@ import {
   ListItemAvatar,
   ListItemText
 } from '@material-ui/core';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import { useHistory } from "react-router-dom";
 
 import mockData from './data';
@@ -30,9 +29,6 @@ const useStyles = makeStyles(() => ({
     height: 48,
     width: 48
   },
-  actions: {
-    justifyContent: 'flex-end'
-  }
 }));
 
 const LatestProducts = props => {
@@ -80,21 +76,13 @@ const LatestProducts = props => {
         </List>
       </CardContent>
       <Divider />
-      <CardActions className={classes.actions}>
+      <CardActions>
         <Button
           color="primary"
-          size="small"
           variant="contained"
           onClick={handleClick}
         >
           Add New Item
-        </Button>
-        <Button
-          color="primary"
-          size="small"
-          variant="text"
-        >
-          View all <ArrowRightIcon />
         </Button>
       </CardActions>
     </Card>

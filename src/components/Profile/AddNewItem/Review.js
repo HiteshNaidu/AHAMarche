@@ -19,9 +19,6 @@ export default function Review(props) {
 
     return (
         <React.Fragment>
-            <Typography variant="h6" gutterBottom>
-                Item summary
-            </Typography>
             <List disablePadding>
                 <ListItem className={classes.listItem}>
                     <ListItemText>Title</ListItemText>

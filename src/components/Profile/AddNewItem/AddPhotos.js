@@ -1,5 +1,4 @@
 import React, { Fragment, useState } from 'react';
-import Typography from '@material-ui/core/Typography';
 import { Camera } from "./camera";
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
@@ -18,14 +17,11 @@ export default function AddPhotos(props) {
 
     return (
         <React.Fragment>
-            <Typography variant="h6" gutterBottom>
-                Add photos
-            </Typography>
             <Fragment>
                 {isCameraOpen && (
                     <>
                         <Camera
-                            onCapture={blob => {setCardImage(blob); props.capturedImage(blob)}}
+                            onCapture={blob => { setCardImage(blob); props.capturedImage(blob) }}
                             onClear={() => setCardImage(undefined)}
                         />
                         <br />
@@ -40,13 +36,15 @@ export default function AddPhotos(props) {
                     // </div>
                 )}
 
-                <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    onClick={() => setIsCameraOpen(true)}>
-                    Open Camera
-                </Button>
+                {(!isCameraOpen) ?
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        onClick={() => setIsCameraOpen(true)}>
+                        Upload Item Picture
+                    </Button> :
+                    <></>}
             </Fragment>
         </React.Fragment>
     );

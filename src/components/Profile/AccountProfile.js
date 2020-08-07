@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -37,10 +37,15 @@ const AccountProfile = props => {
   const { className, ...rest } = props;
   const value = useContext(APIContext);
   const classes = useStyles();
+  const [avatar, setAvatar] = useState('../imgs/avatar.svg');
 
-  const user = {
-    avatar: '../imgs/avatar.svg'
-  };
+  const removeAvatar = () => {
+    setAvatar('');
+  }
+
+  const showAvatar = () => {
+    setAvatar('../imgs/avatar.svg');
+  }
 
   return (
     <Card
@@ -66,7 +71,7 @@ const AccountProfile = props => {
           </div>
           <Avatar
             className={classes.avatar}
-            src={user.avatar}
+            src={avatar}
           />
         </div>
       </CardContent>
@@ -76,10 +81,11 @@ const AccountProfile = props => {
           className={classes.uploadButton}
           color="primary"
           variant="text"
+          onClick={showAvatar}
         >
-          Upload picture
+          Show Avatar
         </Button>
-        <Button variant="text">Remove picture</Button>
+        <Button variant="text" onClick={removeAvatar}>Remove Avatar</Button>
       </CardActions>
     </Card>
   );

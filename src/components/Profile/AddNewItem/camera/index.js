@@ -128,7 +128,7 @@ export function Camera({ onCapture, onClear }) {
                             variant="text"
                             color="primary"
                             onClick={isCanvasEmpty ? handleCapture : handleClear}>
-                            {isCanvasEmpty ? <CameraIcon fontSize="large"></CameraIcon> : "Take another picture"}
+                            {isCanvasEmpty ? <CameraIcon fontSize="large"></CameraIcon> : "Retake picture"}
                         </Button>
                     )}
                 </Wrapper>

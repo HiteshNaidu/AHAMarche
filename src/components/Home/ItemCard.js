@@ -221,7 +221,6 @@ export default function ItemCard(prop) {
                                 </Typography>
                             </CardContent>
                             <CardActions>
-                                {/* <Button size="small" color="primary" variant="outlined" onClick={handleSeller(prop.card.user.split("-")[1] + "-" + prop.card.user.split("-")[2] + "-" + prop.card.user.split("-")[3] + "-" + prop.card.user.split("-")[4] + "-" + prop.card.user.split("-")[5])}> */}
                                 <Button size="small" color="primary" variant="outlined" onClick={handleSeller}>
                                     Pick-Up Item
                                 </Button>
@@ -248,7 +247,7 @@ export default function ItemCard(prop) {
     }
 
     return (
-        (prop.card.price === "free") ?
+        (prop.card.price === "free" || prop.card.price === "Free") ?
             <>
                 <Box border={5} borderColor="green">
                     <Card className={classes.card}>

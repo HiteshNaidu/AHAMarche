@@ -58,9 +58,17 @@ function getStepContent(step, context) {
         case 0:
             return <AddPhotos capturedImage={context.capturedImage} />;
         case 1:
-            return <AddDetails setSelectedTitle={context.setSelectedTitle} setSelectedPrice={context.setSelectedPrice} setSelectedDescription={context.setSelectedDescription} setSelectedCategory={context.setSelectedCategory} setSelectedAge={context.setSelectedAge} setSelectedSize={context.setSelectedSize} />;
+            return <AddDetails selectedTitle={context.selectedTitle} setSelectedTitle={context.setSelectedTitle} selectedPrice={context.selectedPrice}
+                setSelectedPrice={context.setSelectedPrice} selectedDescription={context.selectedDescription} setSelectedDescription={context.setSelectedDescription}
+                setSelectedCategory={context.setSelectedCategory} setSelectedAge={context.setSelectedAge} setSelectedSize={context.setSelectedSize}
+                titleHelperText={context.titleHelperText} setTitleHelperText={context.setTitleHelperText} titleError={context.titleError} setTitleError={context.setTitleError}
+                priceHelperText={context.priceHelperText} setPriceHelperText={context.setPriceHelperText} priceError={context.priceError}
+                setPriceError={context.setPriceError} descriptionHelperText={context.descriptionHelperText} setDescriptionHelperText={context.setDescriptionHelperText}
+                descriptionError={context.descriptionError} setDescriptionError={context.setDescriptionError} />;
         case 2:
-            return <Review image={context.image} selectedTitle={context.selectedTitle} selectedPrice={context.selectedPrice} selectedDescription={context.selectedDescription} selectedCategory={context.selectedCategory} selectedAge={context.selectedAge} selectedSize={context.selectedSize} />;
+            return <Review image={context.image} selectedTitle={context.selectedTitle} selectedPrice={context.selectedPrice}
+                selectedDescription={context.selectedDescription} selectedCategory={context.selectedCategory} selectedAge={context.selectedAge}
+                selectedSize={context.selectedSize} />;
         default:
             throw new Error('Unknown step');
     }
@@ -70,8 +78,14 @@ export default function Checkout() {
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const [selectedTitle, setSelectedTitle] = useState('');
+    const [titleHelperText, setTitleHelperText] = useState('');
+    const [titleError, setTitleError] = useState(false);
     const [selectedPrice, setSelectedPrice] = useState('');
+    const [priceHelperText, setPriceHelperText] = useState('');
+    const [priceError, setPriceError] = useState(false);
     const [selectedDescription, setSelectedDescription] = useState('');
+    const [descriptionHelperText, setDescriptionHelperText] = useState('');
+    const [descriptionError, setDescriptionError] = useState(false);
     const [image, capturedImage] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedAge, setSelectedAge] = useState('');
@@ -90,15 +104,46 @@ export default function Checkout() {
         setSelectedSize,
         selectedTitle,
         setSelectedTitle,
+        titleHelperText,
+        setTitleHelperText,
+        titleError,
+        setTitleError,
         selectedPrice,
         setSelectedPrice,
+        priceHelperText,
+        setPriceHelperText,
+        priceError,
+        setPriceError,
         selectedDescription,
         setSelectedDescription,
+        descriptionHelperText,
+        setDescriptionHelperText,
+        descriptionError,
+        setDescriptionError,
     }
 
     const handleNext = () => {
         if (activeStep === 1) {
             // Error handling for details
+            if (selectedTitle.length) {
+                if (selectedPrice.length) {
+                    if (selectedDescription.length) {
+
+                    } else {
+                        setDescriptionHelperText("Please enter item description");
+                        setDescriptionError(true);
+                        return;
+                    }
+                } else {
+                    setPriceHelperText("Please enter item price");
+                    setPriceError(true);
+                    return;
+                }
+            } else {
+                setTitleHelperText("Please enter item title");
+                setTitleError(true);
+                return;
+            }
         }
         if (activeStep === 2) {
             postItem(currentUser.user.attributes.sub, {
@@ -136,8 +181,7 @@ export default function Checkout() {
                                     Thank you for uploading your item.
                                 </Typography>
                                 <Typography variant="subtitle1">
-                                    Your item has been successfully uploaded to AHAMarché. You will recieve a text message with
-                                    an option to connect with the interested parties.
+                                    Your item has been successfully uploaded to AHAMarché.
                                 </Typography>
                             </React.Fragment>
                         ) : (
