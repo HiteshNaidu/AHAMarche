@@ -33,7 +33,7 @@ export const getUserById = async (userId, token) => {
   try {
     return await api.get(
       config.api.endpoints.user + "/user-" + userId,
-      { headers: { 'Authorization': token } }
+      // { headers: { 'Authorization': token } }
     );
   } catch (e) {
     console.log("Error calling getUserById API: ", e);
@@ -45,7 +45,7 @@ export const getAllUsers = async (token) => {
   try {
     return await api.get(
       config.api.endpoints.user,
-      // { headers: { 'Authorization': token } }
+      { headers: { 'Authorization': token } }
     );
   } catch (e) {
     console.log("Error calling getAllUsers API: ", e);
@@ -112,10 +112,11 @@ export const postItem = async (userId, body, token) => {
 };
 
 // PUT to item by itemid
-export const updateItemById = async (itemId, body) => {
+export const updateItemById = async (itemId, body, token) => {
   try {
     return await api.put(
-      config.api.endpoints.item + "/" + itemId, body
+      config.api.endpoints.item + "/" + itemId, body,
+      { headers: { 'Authorization': token } }
     );
   } catch (e) {
     console.log("Error calling updateItemById API: ", e);
@@ -123,11 +124,11 @@ export const updateItemById = async (itemId, body) => {
 };
 
 // POST to publish text to seller
-export const textToSeller = async (sellerPhone, body) => {
+export const textToSeller = async (sellerPhone, body, token) => {
   try {
     return await api.post(
       config.api.endpoints.sns + "/seller/" + sellerPhone, body,
-      // { headers: { 'Authorization': token } }
+      { headers: { 'Authorization': token } }
     );
   } catch (e) {
     console.log("Error calling textToSeller API: ", e);
@@ -135,11 +136,11 @@ export const textToSeller = async (sellerPhone, body) => {
 };
 
 // POST to publish text to driver
-export const textToDriver = async (driverPhone, body) => {
+export const textToDriver = async (driverPhone, body, token) => {
   try {
     return await api.post(
       config.api.endpoints.sns + "/driver/" + driverPhone, body,
-      // { headers: { 'Authorization': token } }
+      { headers: { 'Authorization': token } }
     );
   } catch (e) {
     console.log("Error calling textToDriver API: ", e);

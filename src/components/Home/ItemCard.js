@@ -96,9 +96,12 @@ export default function ItemCard(prop) {
             if (prop.card.itemSold === false) {
                 const userId = prop.card.user.split("-")[1] + "-" + prop.card.user.split("-")[2] + "-" + prop.card.user.split("-")[3] + "-" + prop.card.user.split("-")[4] + "-" + prop.card.user.split("-")[5];
                 let data = await getUserById(userId, currentUser.user.signInUserSession.idToken.jwtToken);
-                await updateItemById(prop.card.id, { "itemSold": true, "category": prop.card.sort });
+                await updateItemById(prop.card.id, { "itemSold": true, "category": prop.card.sort }, currentUser.user.signInUserSession.idToken.jwtToken);
                 prop.card.itemSold = true;
-                await textToSeller(data.data.phone, { "userName": (value.firstname + " " + value.lastname), "phone": value.username, "item": prop.card.title, "sellerName": (data.data.firstname + " " + data.data.lastname) });
+                await textToSeller(data.data.phone, {
+                    "userName": (value.firstname + " " + value.lastname),
+                    "phone": value.username, "item": prop.card.title, "sellerName": (data.data.firstname + " " + data.data.lastname)
+                }, currentUser.user.signInUserSession.idToken.jwtToken);
                 setMessage("A text message has been sent to the seller. You will be contacted by them for further dicussion.");
                 setOpenAlert(true);
             } else {
@@ -117,7 +120,7 @@ export default function ItemCard(prop) {
                 var price = "0";
                 const userId = prop.card.user.split("-")[1] + "-" + prop.card.user.split("-")[2] + "-" + prop.card.user.split("-")[3] + "-" + prop.card.user.split("-")[4] + "-" + prop.card.user.split("-")[5];
                 let seller = await getUserById(userId, currentUser.user.signInUserSession.idToken.jwtToken);
-                let drivers = await getAllUsers();
+                let drivers = await getAllUsers(currentUser.user.signInUserSession.idToken.jwtToken);
                 switch (prop.card.size) {
                     case 'Small':
                         price = "3.99";
@@ -164,13 +167,13 @@ export default function ItemCard(prop) {
                 }
 
                 const random = Math.floor(Math.random() * driverArr.length);
-                await updateItemById(prop.card.id, { "itemSold": true, "category": prop.card.sort });
+                await updateItemById(prop.card.id, { "itemSold": true, "category": prop.card.sort }, currentUser.user.signInUserSession.idToken.jwtToken);
                 prop.card.itemSold = true;
                 // text to driver here
                 await textToDriver(driverArr[random].phone, {
                     "city": seller.data.city, "item": prop.card.title, "sellerName": (seller.data.firstname + " " + seller.data.lastname),
                     "sellerPhone": (seller.data.phone), "buyerPhone": value.username, "buyerName": (value.firstname + " " + value.lastname), "price": price
-                });
+                }, currentUser.user.signInUserSession.idToken.jwtToken);
                 setMessage("A text message has been sent to the driver. You will be contacted by them for further dicussion.");
                 setOpenAlert(true);
             } else {

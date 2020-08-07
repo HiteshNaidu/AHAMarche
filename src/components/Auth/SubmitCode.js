@@ -250,6 +250,8 @@ export default function SubmitCode(data) {
         <br />
         <br />
         <br />
+        <br />
+        <br />
         <CircularProgress />
         <br />
         <h3>Loading.....</h3>
