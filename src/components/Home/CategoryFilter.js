@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { APIContext } from "../../App";
@@ -25,9 +25,14 @@ export default function CategoryFilter(props) {
         if (values) {
             props.setSelectedCategory(values);
         } else {
-            props.setSelectedCategory('Home');
+            props.setSelectedCategory(category[0]);
         }
     };
+
+    useEffect(() => {
+        props.setSelectedCategory(category[0]);
+        // eslint-disable-next-line
+    }, []);
 
     return (
         <>

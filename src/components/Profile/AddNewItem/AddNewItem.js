@@ -86,7 +86,7 @@ export default function Checkout() {
     const [selectedDescription, setSelectedDescription] = useState('');
     const [descriptionHelperText, setDescriptionHelperText] = useState('');
     const [descriptionError, setDescriptionError] = useState(false);
-    const [image, capturedImage] = useState('');
+    const [image, capturedImage] = useState();
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedAge, setSelectedAge] = useState('');
     const [selectedSize, setSelectedSize] = useState('');

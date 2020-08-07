@@ -21,20 +21,14 @@ export default function AddPhotos(props) {
                 {isCameraOpen && (
                     <>
                         <Camera
-                            onCapture={blob => { setCardImage(blob); props.capturedImage(blob) }}
+                            onCapture={blob => { setCardImage(blob); props.capturedImage(blob); }}
                             onClear={() => setCardImage(undefined)}
                         />
                         <br />
                     </>
                 )}
 
-                {cardImage && (
-                    <></>
-                    // <div>
-                    //     <h2>Preview</h2>
-                    //     <Preview src={cardImage && URL.createObjectURL(cardImage)} />
-                    // </div>
-                )}
+                {cardImage && (<></>)}
 
                 {(!isCameraOpen) ?
                     <Button

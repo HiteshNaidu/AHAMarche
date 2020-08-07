@@ -1,5 +1,5 @@
 import React from 'react';
-import { Doughnut } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -66,19 +66,19 @@ const UsersByDevice = props => {
     responsive: true,
     maintainAspectRatio: false,
     animation: false,
-    cutoutPercentage: 80,
+    // cutoutPercentage: 80,
     layout: { padding: 0 },
-    tooltips: {
-      enabled: true,
-      mode: 'index',
-      intersect: false,
-      borderWidth: 1,
-      borderColor: theme.palette.divider,
-      backgroundColor: theme.palette.white,
-      titleFontColor: theme.palette.text.primary,
-      bodyFontColor: theme.palette.text.secondary,
-      footerFontColor: theme.palette.text.secondary
-    }
+    // tooltips: {
+    //   enabled: true,
+    //   mode: 'index',
+    //   intersect: false,
+    //   borderWidth: 1,
+    //   borderColor: theme.palette.divider,
+    //   backgroundColor: theme.palette.white,
+    //   titleFontColor: theme.palette.text.primary,
+    //   bodyFontColor: theme.palette.text.secondary,
+    //   footerFontColor: theme.palette.text.secondary
+    // }
   };
 
   const devices = [
@@ -112,7 +112,7 @@ const UsersByDevice = props => {
       <Divider />
       <CardContent>
         <div className={classes.chartContainer}>
-          <Doughnut
+          <Pie
             data={data}
             options={options}
           />

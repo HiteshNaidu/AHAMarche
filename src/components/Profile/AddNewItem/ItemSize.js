@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { makeStyles } from "@material-ui/core/styles";
@@ -26,6 +26,11 @@ export default function ItemSize(props) {
             props.setSelectedSize(size[0]);
         }
     };
+
+    useEffect(() => {
+        props.setSelectedSize(size[0]);
+        // eslint-disable-next-line
+    }, []);
 
     return (
         <>
