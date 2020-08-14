@@ -22,6 +22,7 @@ const App = () => {
   const [linkToS3, setLinkToS3] = useState("");
   const [selectedCategory, setSelectedCategory] = useState('Home');
   const [itemList, setItemList] = useState([]);
+  const [realLocation, setRealLocation] = useState({});
 
   const AuthState = {user, setUser};
   const APIState = {
@@ -49,6 +50,8 @@ const App = () => {
     setSelectedCategory,
     itemList,
     setItemList,
+    realLocation,
+    setRealLocation,
   };
 
   async function onLoad() {

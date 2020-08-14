@@ -12,6 +12,7 @@ import { getUserById, textToSeller, getAllUsers, textToDriver, updateItemById } 
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import Box from '@material-ui/core/Box';
+import getPreciseDistance from 'geolib/es/getPreciseDistance';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -56,9 +57,10 @@ export default function ItemCard(prop) {
     const [open, setOpen] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [openFailAlert, setOpenFailAlert] = useState(false);
-    const [message, setMessage] = useState(false);
+    const [message, setMessage] = useState("");
 
     var driverArr = [];
+    var closestDriver = {};
 
     function getModalStyle() {
         const top = 5;
@@ -114,16 +116,34 @@ export default function ItemCard(prop) {
         }
     }
 
+    async function AssignClosestDriver() {
+        closestDriver = driverArr[0];
+        let closestDist = getPreciseDistance(value.realLocation, driverArr[0].realLocation);
+        for (let i = 1; i < driverArr.length; i++) {
+            let dist = getPreciseDistance(value.realLocation, driverArr[i].realLocation);
+            if (dist < closestDist) {
+                closestDriver = driverArr[i];
+                closestDist = dist;
+            }
+        }
+    }
+
+    async function DistanceBetweenSellerAndBuyer(sellerLocation, buyerLocation) {
+        let dist = getPreciseDistance(sellerLocation, buyerLocation);
+        dist = Math.round(((dist/1000) + Number.EPSILON) * 100) / 100;
+        return (0.50 * dist);
+    }
+
     async function handleDelivery() {
         try {
             if (prop.card.itemSold === false) {
-                var price = "0";
+                var price = 0;
                 const userId = prop.card.user.split("-")[1] + "-" + prop.card.user.split("-")[2] + "-" + prop.card.user.split("-")[3] + "-" + prop.card.user.split("-")[4] + "-" + prop.card.user.split("-")[5];
                 let seller = await getUserById(userId, currentUser.user.signInUserSession.idToken.jwtToken);
                 let drivers = await getAllUsers(currentUser.user.signInUserSession.idToken.jwtToken);
                 switch (prop.card.size) {
                     case 'Small':
-                        price = "3.99";
+                        price = 1.99;
                         for (let i = 0; i < drivers.data.length; i++) {
                             if (seller.data.city === drivers.data[i].city && drivers.data[i].isDriver === true && drivers.data[i].isDriverActive === true) {
                                 if (drivers.data[i].vehicleType === "Hatchback" || drivers.data[i].vehicleType === "Sedan" || drivers.data[i].vehicleType === "SUV" || drivers.data[i].vehicleType === "Truck") {
@@ -133,7 +153,7 @@ export default function ItemCard(prop) {
                         }
                         break;
                     case 'Medium':
-                        price = "5.99";
+                        price = 3.99;
                         for (let i = 0; i < drivers.data.length; i++) {
                             if (seller.data.city === drivers.data[i].city && drivers.data[i].isDriver === true && drivers.data[i].isDriverActive === true) {
                                 if (drivers.data[i].vehicleType === "Hatchback" || drivers.data[i].vehicleType === "Sedan" || drivers.data[i].vehicleType === "SUV" || drivers.data[i].vehicleType === "Truck") {
@@ -143,7 +163,7 @@ export default function ItemCard(prop) {
                         }
                         break;
                     case 'Large':
-                        price = "7.99";
+                        price = 5.99;
                         for (let i = 0; i < drivers.data.length; i++) {
                             if (seller.data.city === drivers.data[i].city && drivers.data[i].isDriver === true && drivers.data[i].isDriverActive === true) {
                                 if (drivers.data[i].vehicleType === "SUV" || drivers.data[i].vehicleType === "Truck") {
@@ -153,7 +173,7 @@ export default function ItemCard(prop) {
                         }
                         break;
                     case 'Extra Large':
-                        price = "9.99";
+                        price = 7.99;
                         for (let i = 0; i < drivers.data.length; i++) {
                             if (seller.data.city === drivers.data[i].city && drivers.data[i].isDriver === true && drivers.data[i].isDriverActive === true) {
                                 if (drivers.data[i].vehicleType === "Truck") {
@@ -166,13 +186,16 @@ export default function ItemCard(prop) {
                         console.log("Error: Item size unknown!");
                 }
 
-                const random = Math.floor(Math.random() * driverArr.length);
+                await AssignClosestDriver();
+                let priceOnDist = await DistanceBetweenSellerAndBuyer(seller.data.realLocation, value.realLocation);
+
                 await updateItemById(prop.card.id, { "itemSold": true, "category": prop.card.sort }, currentUser.user.signInUserSession.idToken.jwtToken);
                 prop.card.itemSold = true;
                 // text to driver here
-                await textToDriver(driverArr[random].phone, {
+                await textToDriver(closestDriver.phone, {
                     "city": seller.data.city, "item": prop.card.title, "sellerName": (seller.data.firstname + " " + seller.data.lastname),
-                    "sellerPhone": (seller.data.phone), "buyerPhone": value.username, "buyerName": (value.firstname + " " + value.lastname), "price": price
+                    "sellerPhone": (seller.data.phone), "sellerLocation": seller.data.realLocation, "buyerPhone": value.username,
+                    "buyerName": (value.firstname + " " + value.lastname), "buyerLocation": value.realLocation, "price": (priceOnDist + price)
                 }, currentUser.user.signInUserSession.idToken.jwtToken);
                 setMessage("A text message has been sent to the driver. You will be contacted by them for further dicussion.");
                 setOpenAlert(true);

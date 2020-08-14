@@ -8,10 +8,16 @@ import Container from '@material-ui/core/Container';
 import NavBar from '../NavBar/NavBar';
 import CategoryFilter from './CategoryFilter';
 import { APIContext, AuthContext } from "../../App";
-import { getCurrentUser, getUserById, getItemsByCategory } from "../../utils/Api";
+import { getCurrentUser, getUserById, getItemsByCategory, postUserById } from "../../utils/Api";
 import ItemCard from "./ItemCard";
 import Dashboard from "../Dashboard/Dashboard";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -36,6 +42,8 @@ export default function Home() {
   const value = useContext(APIContext);
 
   const [isLoaded, setIsLoaded] = useState(false);
+  const [openFailAlert, setOpenFailAlert] = useState(false);
+  const [message, setMessage] = useState("");
 
   // Get current user upon initial load
   useEffect(() => {
@@ -43,6 +51,16 @@ export default function Home() {
       try {
         const user = await getCurrentUser();
         currentUser.setUser(user);
+
+        navigator.geolocation.getCurrentPosition(
+          async function (position) {
+            await postUserById(user.attributes.sub, { "realLocation": { "latitude": position.coords.latitude, "longitude": position.coords.longitude } });
+          },
+          function (error) {
+            setMessage("You location is not accessible! Please allow AHAMarché to access your location.");
+            setOpenFailAlert(true);
+          }
+        )
 
         let data = await getUserById(user.attributes.sub, user.signInUserSession.idToken.jwtToken);
         if (data) {
@@ -56,6 +74,7 @@ export default function Home() {
           value.setDeliveriesCompleted(data.data.deliveriesCompleted);
           value.setVehicleType(data.data.vehicleType);
           value.setLinkToS3(data.data.linkToS3);
+          value.setRealLocation(data.data.realLocation);
         }
         let items = await getItemsByCategory(value.selectedCategory, user.signInUserSession.idToken.jwtToken);
         if (items.data) {
@@ -91,6 +110,13 @@ export default function Home() {
     // value.setItemList(items.data);
   }
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenFailAlert(false);
+  };
+
   return (
     (isLoaded) ?
       <>
@@ -105,17 +131,17 @@ export default function Home() {
                 <Container maxWidth="sm">
                   <Typography component="h1" variant="h4" align="center" color="textPrimary" gutterBottom>
                     Your Personal Marketplace
-              </Typography>
+                  </Typography>
                   <Typography variant="h6" align="center" color="textSecondary" paragraph>
                     Please select the category you want to explore
-              </Typography>
+                  </Typography>
                   <CategoryFilter setSelectedCategory={value.setSelectedCategory}></CategoryFilter>
                   <div className={classes.heroButtons}>
                     <Grid container spacing={2} justify="center">
                       <Grid item>
                         <Button variant="contained" color="primary" onClick={handleCategoryChange}>
                           Change Category
-                  </Button>
+                        </Button>
                       </Grid>
                     </Grid>
                   </div>
@@ -129,6 +155,11 @@ export default function Home() {
                     </Grid>
                   ))}
                 </Grid>
+                <Snackbar open={openFailAlert} autoHideDuration={5000} onClose={handleClose}>
+                  <Alert style={{ textAlign: "left" }} severity="error" onClose={handleClose}>
+                    {message}
+                  </Alert>
+                </Snackbar>
               </Container>
             </main>
           </React.Fragment>}
